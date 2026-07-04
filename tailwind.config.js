@@ -1,0 +1,110 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: 'class',
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'Arial', 'sans-serif'],
+      },
+      colors: {
+        brand: {
+          DEFAULT: '#3f6df6',
+          dark:    '#3050d4',
+          deeper:  '#2d52cc',
+          light:   '#5a8cf8',
+          mid:     '#3657c7',
+          xlight:  '#eef4ff',
+          border:  '#dce8ff',
+          muted:   '#c7d3f9',
+        },
+        navy: {
+          DEFAULT: '#162033',
+          deep:    '#0d1a34',
+          darkest: '#07111f',
+          mid:     '#162c5e',
+          bright:  '#1f3d82',
+          medium:  '#1a3366',
+          vivid:   '#2547a0',
+        },
+        surface: {
+          DEFAULT: '#f7f8fc',
+          muted:   '#f4f6fb',
+          border:  '#eef2f8',
+          input:   '#d5dce8',
+          divider: '#e8edf7',
+        },
+        muted: {
+          DEFAULT: '#5b6474',
+          light:   '#6b7280',
+          dark:    '#4b5563',
+          darker:  '#374151',
+          lighter: '#9ca3af',
+          tab:     '#8a95a3',
+        },
+      },
+      backgroundImage: {
+        'brand-gradient':    'linear-gradient(135deg, #3050d4 0%, #3f6df6 100%)',
+        'brand-full':        'linear-gradient(135deg, #2d52cc 0%, #3f6df6 50%, #5a8cf8 100%)',
+        'navy-card':         'linear-gradient(150deg, #0d1a34 0%, #162c5e 60%, #1f3d82 100%)',
+        'auth-page':         'linear-gradient(135deg, #07111f 0%, #0d1f43 40%, #162f6b 80%, #1e3d8a 100%)',
+        'checkout-page':     'linear-gradient(160deg, #f0f4ff 0%, #ffffff 60%)',
+        'avatar-gradient':   'linear-gradient(135deg, #3f6df6 0%, #5a8cf8 100%)',
+        'risk-gradient':     'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+        'safe-gradient':     'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+        'tour-header':       'linear-gradient(135deg, #0d1a34 0%, #1a3366 60%, #2547a0 100%)',
+        'pink-standby':      'linear-gradient(135deg, #fce7f3 0%, #fdf4ff 100%)',
+        'dark-payout':       'linear-gradient(150deg, #0d1a34 0%, #162c5e 60%, #1f3d82 100%)',
+        'coordinator-guard': 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+        'coordinator-safe':  'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+      },
+      boxShadow: {
+        'nav':       '0 1px 0 #eef2f8',
+        'card':      '0 8px 28px rgba(15,23,42,0.06)',
+        'card-lg':   '0 14px 40px rgba(15,23,42,0.08)',
+        'brand':     '0 6px 20px rgba(63,109,246,0.38)',
+        'brand-sm':  '0 3px 10px rgba(63,109,246,0.3)',
+        'brand-btn': '0 4px 14px rgba(63,109,246,0.35)',
+        'brand-ring':'0 0 0 3px rgba(63,109,246,0.14)',
+        'green-glow':'0 4px 16px rgba(34,197,94,0.4)',
+        'red-glow':  '0 4px 16px rgba(239,68,68,0.4)',
+        'pink-ring': '0 0 0 3px rgba(236,72,153,0.1)',
+        'dialog':    '0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.07)',
+        'dark-card': '0 14px 40px rgba(10,18,40,0.25)',
+      },
+      keyframes: {
+        'bar-wave': {
+          '0%, 100%': { transform: 'scaleY(0.3)' },
+          '50%':      { transform: 'scaleY(1)' },
+        },
+        'slide-up': {
+          '0%':   { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'flash-pulse': {
+          '0%, 100%': { opacity: '1' },
+          '50%':      { opacity: '0.55' },
+        },
+        'fadeIn': {
+          '0%':   { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+      animation: {
+        'bar-wave':    'bar-wave 0.8s ease-in-out infinite',
+        'slide-up':    'slide-up 0.25s ease-out',
+        'flash-pulse': 'flash-pulse 1.2s ease-in-out infinite',
+        'fade-in':     'fadeIn 0.3s ease-out',
+      },
+      borderRadius: {
+        '2.5xl': '20px',
+        '3.5xl': '28px',
+      },
+    },
+  },
+  plugins: [],
+};
