@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import AppTour from '../components/AppTour';
@@ -20,6 +20,36 @@ interface ServiceProvider {
   name: string; bio: string; suburb: string;
   hourlyRate: number; badges: string[]; specialties: string[];
   availability: string; isVerified: boolean;
+}
+
+// ── Seed API types & helpers ──────────────────────────────────────────────
+interface SeedWorker {
+  id: string; name: string; bio: string; suburb: string;
+  hourlyRate: number; category: 'support' | 'cleaner' | 'gardener' | 'ot';
+  backgroundCheckVerified: boolean; strengths: string[]; availability: boolean[][];
+}
+
+const CATEGORY_MAP: Record<SeedWorker['category'], ServiceCategory> = {
+  support:  'Support Workers',
+  cleaner:  'Cleaners',
+  gardener: 'Gardeners',
+  ot:       'Occupational Therapists',
+};
+
+const CATEGORY_SPECIALTIES: Record<SeedWorker['category'], string[]> = {
+  support:  ['Personal care', 'Daily living support', 'Community access'],
+  cleaner:  ['Domestic assistance', 'Home hygiene', 'Laundry & ironing'],
+  gardener: ['Lawn mowing', 'Accessible garden design', 'Seasonal maintenance'],
+  ot:       ['Home modification reports', 'AT prescription', 'NDIS goal planning'],
+};
+
+function availabilityLabel(av: boolean[][]): string {
+  const weekday = av.slice(0, 5).some((d) => d[0] || d[1]);
+  const weekend = av.slice(5).some((d) => d.some(Boolean));
+  if (weekday && weekend) return 'Available this week';
+  if (weekday)            return 'Available Mon–Fri';
+  if (weekend)            return 'Available weekends';
+  return 'Limited availability';
 }
 
 const BADGE_COLORS = [
@@ -89,18 +119,40 @@ export default function MarketplacePage() {
   const [suburbQuery,  setSuburbQuery]  = useState('');
   const [maxRate,      setMaxRate]      = useState(220);
   const [verifiedOnly, setVerifiedOnly] = useState(true);
+  const [providers,    setProviders]    = useState<ServiceProvider[]>(PROVIDERS);
 
   const { isAllowed } = useRouteGuard({ allowedRoles: ['PARTICIPANT'] });
 
+  useEffect(() => {
+    fetch('/api/debug/seed')
+      .then((r) => r.json())
+      .then(({ data }) => {
+        const mapped: ServiceProvider[] = (data.workers as SeedWorker[]).map((w) => ({
+          id:           w.id,
+          category:     CATEGORY_MAP[w.category],
+          name:         w.name,
+          bio:          w.bio,
+          suburb:       w.suburb,
+          hourlyRate:   w.hourlyRate,
+          badges:       w.strengths,
+          specialties:  CATEGORY_SPECIALTIES[w.category],
+          availability: availabilityLabel(w.availability),
+          isVerified:   w.backgroundCheckVerified,
+        }));
+        setProviders(mapped);
+      })
+      .catch(() => { /* keep PROVIDERS fallback */ });
+  }, []);
+
   const filtered = useMemo(() =>
-    PROVIDERS.filter(
+    providers.filter(
       (p) =>
         p.category   === category &&
         p.suburb.toLowerCase().includes(suburbQuery.trim().toLowerCase()) &&
         p.hourlyRate <= maxRate &&
         (!verifiedOnly || p.isVerified),
     ),
-  [category, suburbQuery, maxRate, verifiedOnly]);
+  [category, suburbQuery, maxRate, verifiedOnly, providers]);
 
   const catMeta = CATEGORIES.find((c) => c.id === category)!;
 

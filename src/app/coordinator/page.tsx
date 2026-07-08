@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import AppTour from '../../components/AppTour';
 import CareTeamCalendar from '../../components/CareTeamCalendar';
@@ -84,15 +84,82 @@ const SHIFT_STATUS_ICONS: Record<ShiftStatus, string> = {
   'no-show': '⚠',
 };
 
+// ── Seed API types (client-side shapes for hydration) ─────────────────────
+interface SeedParticipant {
+  id: string; name: string; suburb: string;
+  ndisBudget: number; ndisRemaining: number;
+  planEndDate: string; weeklyHours: number; coordinatorId: string;
+}
+interface SeedBooking { participantId: string; workerId: string; }
+interface SeedWorkerMin { id: string; name: string; hourlyRate: number; }
+interface SeedShiftLog {
+  id: string; workerName: string; workerInitials: string;
+  participantName: string; date: string; clockIn: string;
+  clockOut: string | null; durationHrs: number | null;
+  status: 'active' | 'completed' | 'no-show';
+  gpsVerified: boolean; gpsAddress: string;
+  serviceType: string; hourlyRate: number;
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────
 export default function CoordinatorPage() {
   const [selectedId,     setSelectedId]     = useState('p1');
   const [safeguardState, setSafeguardState] = useState<'idle' | 'active' | 'confirmed'>('idle');
   const [ledgerFilter,   setLedgerFilter]   = useState<'all' | 'active'>('all');
+  const [participants,   setParticipants]   = useState<Participant[]>(PARTICIPANTS);
+  const [shiftLedger,    setShiftLedger]    = useState<ShiftEntry[]>(SHIFT_LEDGER);
 
   const { isAllowed } = useRouteGuard({ allowedRoles: ['COORDINATOR'], requireAuth: true });
 
-  const selected = PARTICIPANTS.find((p) => p.id === selectedId)!;
+  useEffect(() => {
+    fetch('/api/debug/seed')
+      .then((r) => r.json())
+      .then(({ data }) => {
+        const workers: SeedWorkerMin[]   = data.workers;
+        const bookings: SeedBooking[]    = data.bookings;
+        const logs: SeedShiftLog[]       = data.shiftLogs;
+        const raw: SeedParticipant[]     = data.participants;
+
+        const mapped: Participant[] = raw.map((p) => {
+          const pBooking  = bookings.find((b) => b.participantId === p.id);
+          const worker    = pBooking ? workers.find((w) => w.id === pBooking.workerId) : undefined;
+          const planEnd   = new Date(p.planEndDate).getTime();
+          const weeksRem  = Math.max(0, Math.round((planEnd - Date.now()) / (7 * 24 * 60 * 60 * 1000)));
+          return {
+            id:              p.id,
+            name:            p.name,
+            workerName:      worker?.name      ?? 'Unassigned',
+            allocatedBudget: p.ndisBudget,
+            remainingBudget: p.ndisRemaining,
+            weeklyHours:     p.weeklyHours,
+            hourlyRate:      worker?.hourlyRate ?? 0,
+            planEndDate:     p.planEndDate,
+            weeksRemaining:  weeksRem,
+          };
+        });
+        setParticipants(mapped);
+
+        const mappedLogs: ShiftEntry[] = logs.map((sl) => ({
+          id:              sl.id,
+          workerName:      sl.workerName,
+          workerInitials:  sl.workerInitials,
+          participantName: sl.participantName,
+          date:            sl.date,
+          clockIn:         sl.clockIn,
+          clockOut:        sl.clockOut,
+          durationHrs:     sl.durationHrs,
+          status:          sl.status,
+          gpsVerified:     sl.gpsVerified,
+          location:        sl.gpsAddress,
+          serviceType:     sl.serviceType,
+          hourlyRate:      sl.hourlyRate,
+        }));
+        setShiftLedger(mappedLogs);
+      })
+      .catch(() => { /* keep hardcoded fallback */ });
+  }, []);
+
+  const selected = participants.find((p) => p.id === selectedId) ?? participants[0];
 
   const detail = useMemo(() => {
     const weeklyShiftCost   = selected.weeklyHours * selected.hourlyRate;
@@ -107,15 +174,15 @@ export default function CoordinatorPage() {
   const hc = HC[detail.health];
 
   const atRisk = useMemo(() =>
-    PARTICIPANTS.filter((p) => {
+    participants.filter((p) => {
       const wc = p.weeklyHours * p.hourlyRate;
       return getHealth(p.remainingBudget, p.allocatedBudget, p.weeksRemaining, wc) !== 'green';
     }),
-  []);
+  [participants]);
 
   const visibleLedger = ledgerFilter === 'active'
-    ? SHIFT_LEDGER.filter((s) => s.status === 'active')
-    : SHIFT_LEDGER;
+    ? shiftLedger.filter((s) => s.status === 'active')
+    : shiftLedger;
 
   const activateSafeguard = () => {
     setSafeguardState('active');
@@ -211,7 +278,7 @@ export default function CoordinatorPage() {
 
           {/* Participant selector */}
           <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-            {PARTICIPANTS.map((p) => {
+            {participants.map((p) => {
               const wc     = p.weeklyHours * p.hourlyRate;
               const health = getHealth(p.remainingBudget, p.allocatedBudget, p.weeksRemaining, wc);
               const h      = HC[health];
@@ -507,10 +574,10 @@ export default function CoordinatorPage() {
             {/* Ledger summary bar */}
             <div className="mt-4 pt-4 border-t border-surface-border flex flex-wrap gap-4 text-[13px]">
               {[
-                { label: 'Total shifts',  value: SHIFT_LEDGER.length.toString() },
-                { label: 'Active now',    value: SHIFT_LEDGER.filter((s) => s.status === 'active').length.toString(), highlight: true },
-                { label: 'GPS verified',  value: `${SHIFT_LEDGER.filter((s) => s.gpsVerified).length} / ${SHIFT_LEDGER.length}` },
-                { label: 'No-shows',      value: SHIFT_LEDGER.filter((s) => s.status === 'no-show').length.toString(), warn: true },
+                { label: 'Total shifts',  value: shiftLedger.length.toString() },
+                { label: 'Active now',    value: shiftLedger.filter((s) => s.status === 'active').length.toString(), highlight: true },
+                { label: 'GPS verified',  value: `${shiftLedger.filter((s) => s.gpsVerified).length} / ${shiftLedger.length}` },
+                { label: 'No-shows',      value: shiftLedger.filter((s) => s.status === 'no-show').length.toString(), warn: true },
               ].map(({ label, value, highlight, warn }) => (
                 <div key={label} className="flex items-center gap-2">
                   <span className="text-muted-light font-medium">{label}:</span>

@@ -73,7 +73,7 @@ export default function DataResidencyAudit() {
     setRefreshedAt(new Date().toLocaleTimeString('en-AU'));
   };
 
-  useEffect(() => { refresh(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { refresh(); }, []);
 
   const presentCount = entries.filter((e) => e.present).length;
 
