@@ -27,10 +27,29 @@ export default function BiometricCheckpoint({ userName, onComplete }: Props) {
     };
 
     async function attemptWebAuthn() {
-      // ── Capacitor (native app): replace the block below with ─────────────
-      // import { BiometricAuth } from '@aparajita/capacitor-biometric-auth';
-      // await BiometricAuth.authenticate({ reason: 'Verify your identity to continue', cancelTitle: 'Use PIN instead' });
-      // if (!cancelled) setPhase('success');
+      // ── Native Capacitor path (@capgo/capacitor-native-biometric) ─────────
+      const { detectNativeRuntime, BIOMETRIC_CONFIG } = await import('../lib/biometricConfig');
+      if (await detectNativeRuntime()) {
+        try {
+          const { NativeBiometric } = await import('@capgo/capacitor-native-biometric');
+          const availability = await NativeBiometric.isAvailable();
+          if (availability.isAvailable) {
+            await NativeBiometric.verifyIdentity({
+              reason:             BIOMETRIC_CONFIG.reason,
+              title:              BIOMETRIC_CONFIG.title,
+              subtitle:           BIOMETRIC_CONFIG.subtitle,
+              negativeButtonText: BIOMETRIC_CONFIG.negativeButtonText,
+              maxAttempts:        BIOMETRIC_CONFIG.maxAttempts,
+            });
+            if (!cancelled) setPhase('success');
+            return;
+          }
+        } catch {
+          // User cancelled or sensor locked → simulation fallback
+          if (!cancelled) fallback();
+          return;
+        }
+      }
       // ─────────────────────────────────────────────────────────────────────
       if (
         typeof window === 'undefined' ||

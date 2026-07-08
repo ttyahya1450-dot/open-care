@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth, type UserRole } from '../context/AuthContext';
 
 // ── Minimal SVG icons ──────────────────────────────────────────────────────
@@ -95,6 +95,18 @@ function PriceIcon() {
   );
 }
 
+// Sign out — arrow leaving a door frame
+function LogoutIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+  );
+}
+
 // ── Nav configuration ──────────────────────────────────────────────────────
 interface NavItem {
   href:  string;
@@ -126,12 +138,18 @@ const GUEST_NAV: NavItem[] = [
 
 // ── Component ──────────────────────────────────────────────────────────────
 export default function BottomNav() {
-  const { user } = useAuth();
-  const pathname  = usePathname();
+  const { user, signOut } = useAuth();
+  const pathname           = usePathname();
+  const router             = useRouter();
 
   const navItems = user ? ROLE_NAV[user.role] : GUEST_NAV;
 
   const isActive = (href: string) => pathname === href.split('#')[0];
+
+  const handleSignOut = () => {
+    signOut();
+    router.replace('/auth');
+  };
 
   return (
     // md:hidden — only renders on mobile; desktop uses the top Navbar
@@ -168,6 +186,23 @@ export default function BottomNav() {
             </Link>
           );
         })}
+
+        {/* Sign out — visible for authenticated users only; sign-in is via guest nav */}
+        {user && (
+          <button
+            onTouchStart={(e) => { e.preventDefault(); handleSignOut(); }}
+            onClick={handleSignOut}
+            className="flex flex-col items-center justify-center gap-1 flex-1 min-h-[48px]
+                       text-muted-light dark:text-slate-500 cursor-pointer border-none bg-transparent
+                       hover:text-rose-500 dark:hover:text-rose-400 active:scale-95 transition-all duration-150"
+            aria-label="Sign out"
+          >
+            <LogoutIcon />
+            <span className="text-[10px] font-bold tracking-[0.03em] leading-none">
+              Sign out
+            </span>
+          </button>
+        )}
       </div>
     </nav>
   );

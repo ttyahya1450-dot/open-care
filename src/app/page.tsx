@@ -127,8 +127,9 @@ export default function MarketplacePage() {
                 key={id}
                 role="tab"
                 aria-selected={active}
+                onTouchStart={(e) => { e.preventDefault(); setCategory(id); setSuburbQuery(''); }}
                 onClick={() => { setCategory(id); setSuburbQuery(''); }}
-                className={`flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-[14px] border-2 font-bold text-[13px] cursor-pointer transition-all ${
+                className={`flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-[14px] border-2 font-bold text-[13px] cursor-pointer transition-all active:scale-[0.97] ${
                   active
                     ? 'bg-brand-gradient text-white border-transparent shadow-brand-sm'
                     : 'bg-white dark:bg-slate-800 text-muted-dark dark:text-slate-300 border-surface-border dark:border-slate-700 hover:border-brand/40 hover:text-navy dark:hover:text-white'

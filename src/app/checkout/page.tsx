@@ -30,7 +30,7 @@ export default function CheckoutPage() {
 
   if (booked) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-surface dark:bg-slate-900 px-5 transition-colors duration-200">
+      <main className="min-h-screen flex flex-col items-center justify-center bg-surface dark:bg-slate-900 px-5 overflow-x-hidden transition-colors duration-200">
         <div className="bg-white dark:bg-slate-800 rounded-[24px] p-11 text-center max-w-[480px] w-full shadow-card-lg dark:shadow-none border border-surface-border dark:border-slate-700 animate-fade-in">
           <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mx-auto mb-5 text-[26px]">✓</div>
           <h1 className="text-[24px] font-extrabold text-navy dark:text-white mb-2">Booking confirmed!</h1>
@@ -55,7 +55,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-checkout-page dark:bg-slate-900 text-navy dark:text-slate-100 transition-colors duration-200">
+    <main className="min-h-screen bg-checkout-page dark:bg-slate-900 text-navy dark:text-slate-100 overflow-x-hidden transition-colors duration-200">
       <Navbar />
 
       <section className="w-full max-w-md sm:max-w-[1120px] mx-auto overflow-x-hidden px-4 sm:px-5 py-6 sm:py-9 grid gap-5 sm:gap-7">
@@ -156,8 +156,9 @@ export default function CheckoutPage() {
             </div>
 
             <button
+              onTouchStart={(e) => { e.preventDefault(); setBooked(true); }}
               onClick={() => setBooked(true)}
-              className="w-full py-4 rounded-2xl bg-brand-gradient text-white font-extrabold text-[15px] cursor-pointer border-none shadow-brand hover:opacity-95 transition-opacity tracking-wide"
+              className="w-full py-4 rounded-2xl bg-brand-gradient text-white font-extrabold text-[15px] cursor-pointer border-none shadow-brand hover:opacity-95 active:scale-[0.98] transition-all tracking-wide"
             >
               Confirm booking — ${fees.participantCheckoutTotal.toFixed(2)}
             </button>

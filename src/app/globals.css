@@ -19,12 +19,20 @@
     /* Prevent content hiding behind iOS bottom bar + BottomNav */
     padding-bottom: env(safe-area-inset-bottom);
   }
+  /* Eliminate the 300 ms tap delay on all interactive elements.
+     touch-action: manipulation disables double-tap zoom so the browser can
+     fire the click immediately without waiting to classify the gesture.   */
+  button, [role="button"], a, input[type="submit"], input[type="button"], label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 @layer components {
   /* ── Layout ───────────────────────────────────────────────────────────── */
   .page-shell {
     @apply min-h-screen bg-surface dark:bg-slate-900 text-navy dark:text-slate-100 transition-colors duration-200;
+    overflow-x: hidden;          /* Belt-and-suspenders: prevents child overflow from shifting the page */
     /* Reserve space for the 64 px BottomNav on mobile */
     padding-bottom: calc(64px + env(safe-area-inset-bottom));
   }
@@ -39,6 +47,7 @@
            px-4 sm:px-5
            py-6 sm:py-9
            grid gap-5 sm:gap-7;
+    overflow-x: hidden;          /* Prevent any inner element from creating a horizontal scrollbar */
   }
 
   /* ── Cards ───────────────────────────────────────────────────────────── */

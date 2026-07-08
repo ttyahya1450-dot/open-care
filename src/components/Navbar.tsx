@@ -28,11 +28,23 @@ function MoonIcon() {
   );
 }
 
-// ── Role meta ──────────────────────────────────────────────────────────────
-const ROLE_META: Record<UserRole, { label: string; badge: string }> = {
-  PARTICIPANT:  { label: 'Participant',    badge: 'bg-brand-xlight text-brand-mid' },
-  WORKER:       { label: 'Support Worker', badge: 'bg-pink-50 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300' },
-  COORDINATOR:  { label: 'Coordinator',    badge: 'bg-purple-50 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300' },
+// ── Role meta (badge + ring colour for mobile avatar) ─────────────────────
+const ROLE_META: Record<UserRole, { label: string; badge: string; ring: string }> = {
+  PARTICIPANT: {
+    label: 'Participant',
+    badge: 'bg-brand-xlight text-brand-mid',
+    ring:  'ring-2 ring-brand/60 ring-offset-1 ring-offset-white dark:ring-offset-slate-800',
+  },
+  WORKER: {
+    label: 'Support Worker',
+    badge: 'bg-pink-50 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300',
+    ring:  'ring-2 ring-pink-400/80 ring-offset-1 ring-offset-white dark:ring-offset-slate-800',
+  },
+  COORDINATOR: {
+    label: 'Coordinator',
+    badge: 'bg-purple-50 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
+    ring:  'ring-2 ring-purple-400/80 ring-offset-1 ring-offset-white dark:ring-offset-slate-800',
+  },
 };
 
 // ── Role-filtered navigation (desktop only) ────────────────────────────────
@@ -58,9 +70,12 @@ const GUEST_NAV = [
 ];
 
 // ── Theme toggle pill ──────────────────────────────────────────────────────
+// onTouchStart fires immediately without the 300 ms classification delay.
+// e.preventDefault() suppresses the ghost click that would fire afterwards.
 function ThemeToggle({ theme, onToggle }: { theme: string; onToggle: () => void }) {
   return (
     <button
+      onTouchStart={(e) => { e.preventDefault(); onToggle(); }}
       onClick={onToggle}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       className="relative w-[52px] h-[28px] rounded-full cursor-pointer border-none outline-none shrink-0
@@ -101,15 +116,16 @@ export default function Navbar() {
   return (
     <>
       <nav className="nav-root">
-        <div className="max-w-[1120px] mx-auto px-4 sm:px-5 flex items-center justify-between h-[60px]">
+        {/* overflow-hidden prevents any child element from creating horizontal bleed */}
+        <div className="max-w-[1120px] mx-auto px-4 sm:px-5 flex items-center justify-between h-[60px] overflow-hidden">
 
-          {/* Logo — always visible */}
+          {/* Logo — shrink-0 keeps it from collapsing; min-w-0 lets it truncate if needed */}
           <Link
             href={user ? (ROLE_NAV[user.role]?.[0]?.href ?? '/') : '/'}
-            className="font-extrabold text-[18px] text-brand tracking-tight no-underline flex items-center gap-2 shrink-0"
+            className="font-extrabold text-[18px] text-brand tracking-tight no-underline flex items-center gap-2 shrink-0 min-w-0"
           >
-            <span className="w-[30px] h-[30px] bg-avatar-gradient rounded-[8px] flex items-center justify-center text-white text-[14px]">🩺</span>
-            <span>OpenCare</span>
+            <span className="w-[30px] h-[30px] bg-avatar-gradient rounded-[8px] flex items-center justify-center text-white text-[14px] shrink-0">🩺</span>
+            <span className="truncate">OpenCare</span>
           </Link>
 
           {/* ── Desktop nav (hidden on mobile — bottom nav handles it) ── */}
@@ -149,6 +165,7 @@ export default function Navbar() {
                   </div>
                 </div>
                 <button
+                  onTouchStart={(e) => { e.preventDefault(); handleSignOut(); }}
                   onClick={handleSignOut}
                   className="px-3 py-1.5 rounded-[10px] border border-surface-divider dark:border-slate-600
                              bg-white dark:bg-slate-800 text-muted-light dark:text-slate-400
@@ -167,19 +184,24 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* ── Mobile top-right: theme toggle + notifications only ── */}
-          {/* Nav is handled by BottomNav below */}
-          <div className="flex md:hidden items-center gap-2.5">
+          {/* ── Mobile top-right: theme · bell · role-ring avatar ─────────────── */}
+          {/* Sign out is in BottomNav — keeps the header row uncluttered.         */}
+          <div className="flex md:hidden items-center gap-2 shrink-0">
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
             {user && <NotificationBell />}
-            {/* Compact user avatar pill */}
+
+            {/* Role-ring avatar — the coloured ring encodes the user's role at a glance */}
             {user && (
-              <div className="flex items-center gap-1.5 px-2 py-1 bg-surface-muted dark:bg-slate-800 rounded-[10px] border border-surface-border dark:border-slate-700 shrink-0">
-                <div className="w-[24px] h-[24px] bg-avatar-gradient rounded-full flex items-center justify-center text-white font-extrabold text-[10px] shrink-0">
-                  {initials}
-                </div>
+              <div
+                className={`w-[32px] h-[32px] bg-avatar-gradient rounded-full flex items-center justify-center
+                             text-white font-extrabold text-[11px] shrink-0 ${roleMeta?.ring ?? ''}`}
+                role="img"
+                aria-label={`Signed in as ${user.name} — ${roleMeta?.label ?? 'User'}`}
+              >
+                {initials}
               </div>
             )}
+
             {!user && (
               <Link
                 href="/auth"

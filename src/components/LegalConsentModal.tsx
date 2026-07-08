@@ -36,7 +36,7 @@ const ROLE_INTRO: Record<string, { title: string; subtitle: string; icon: string
 };
 
 export default function LegalConsentModal() {
-  const { user } = useAuth();
+  const { user, completeTour } = useAuth();
   const { hasConsented, recordConsent } = useLegalConsent();
 
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
@@ -86,6 +86,9 @@ export default function LegalConsentModal() {
         simulatedIp:   simulateIp(user.email),
         sessionId:     sessionId(),
       });
+      // Persist isNewUser: false to localStorage immediately so that future page
+      // loads (including the next daily login) see isNewUser: false and skip this modal.
+      completeTour();
       setSubmitted(true);
     }, 900);
   };

@@ -361,6 +361,7 @@ export default function CoordinatorPage() {
                 {(['all', 'active'] as const).map((f) => (
                   <button
                     key={f}
+                    onTouchStart={(e) => { e.preventDefault(); setLedgerFilter(f); }}
                     onClick={() => setLedgerFilter(f)}
                     className={`px-3.5 py-1.5 rounded-[9px] border-none font-bold text-[12px] cursor-pointer transition-all capitalize ${
                       ledgerFilter === f
