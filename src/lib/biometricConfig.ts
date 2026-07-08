@@ -37,7 +37,7 @@ export async function resolveBiometricCapability(): Promise<BiometricCapability>
     const result = await NativeBiometric.isAvailable();
     return {
       available:    result.isAvailable,
-      biometryType: (result.biometryType ?? 'none') as BiometricType,
+      biometryType: (result.biometryType ?? 'none') as unknown as BiometricType,
       isStrong:     true,
     };
   } catch {
