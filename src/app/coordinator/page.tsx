@@ -45,10 +45,28 @@ const HC = {
   red:   { label: 'At risk',  bar: '#ef4444', bg: '#fff1f2', border: '#fecdd3', text: '#9f1239', badge: '#ffe4e6', badgeText: '#be123c' },
 };
 
+const ALERT_CLASSES = {
+  green: {
+    box:   'bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-700',
+    text:  'text-green-800 dark:text-green-300',
+    badge: 'bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-300',
+  },
+  amber: {
+    box:   'bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-700',
+    text:  'text-amber-800 dark:text-amber-300',
+    badge: 'bg-amber-100 dark:bg-amber-800/40 text-amber-700 dark:text-amber-300',
+  },
+  red: {
+    box:   'bg-rose-50 dark:bg-rose-900/30 border-rose-200 dark:border-rose-700',
+    text:  'text-rose-800 dark:text-rose-300',
+    badge: 'bg-rose-100 dark:bg-rose-800/40 text-rose-700 dark:text-rose-300',
+  },
+};
+
 const STATUS_BADGE: Record<Health, string> = {
-  green: 'bg-green-100 text-green-700',
-  amber: 'bg-amber-100 text-amber-700',
-  red:   'bg-rose-100 text-rose-700',
+  green: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+  amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
+  red:   'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400',
 };
 
 // ── Verified Shift Ledger types ────────────────────────────────────────────
@@ -73,9 +91,9 @@ const SHIFT_LEDGER: ShiftEntry[] = [
 ];
 
 const SHIFT_STATUS_STYLES: Record<ShiftStatus, string> = {
-  active:    'bg-green-100 text-green-700 border border-green-200',
+  active:    'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800',
   completed: 'bg-surface text-muted-dark border border-surface-border',
-  'no-show': 'bg-rose-100 text-rose-700 border border-rose-200',
+  'no-show': 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800',
 };
 
 const SHIFT_STATUS_ICONS: Record<ShiftStatus, string> = {
@@ -172,6 +190,7 @@ export default function CoordinatorPage() {
   }, [selected]);
 
   const hc = HC[detail.health];
+  const ac = ALERT_CLASSES[detail.health];
 
   const atRisk = useMemo(() =>
     participants.filter((p) => {
@@ -218,19 +237,18 @@ export default function CoordinatorPage() {
           {/* 1-Click Budget Safeguard */}
           <div
             id="budget-safeguard"
-            className="rounded-[24px] p-6 border-2 transition-all duration-300"
-            style={{
-              background:  safeguardState === 'confirmed' ? 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)' : 'linear-gradient(135deg,#fff1f2 0%,#ffe4e6 100%)',
-              borderColor: safeguardState === 'confirmed' ? '#86efac' : '#fca5a5',
-              boxShadow:   safeguardState === 'confirmed' ? '0 0 0 4px rgba(34,197,94,0.1)' : '0 0 0 4px rgba(239,68,68,0.08)',
-            }}
+            className={`rounded-[24px] p-6 border-2 transition-all duration-300 ${
+              safeguardState === 'confirmed'
+                ? 'bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 border-green-300 dark:border-green-700 shadow-[0_0_0_4px_rgba(34,197,94,0.1)]'
+                : 'bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/30 dark:to-rose-800/20 border-rose-300 dark:border-rose-700 shadow-[0_0_0_4px_rgba(239,68,68,0.08)]'
+            }`}
           >
             <div className="flex justify-between items-start flex-wrap gap-3.5 mb-4">
               <div>
-                <h2 className={`text-[20px] font-bold mb-1.5 ${safeguardState === 'confirmed' ? 'text-green-800' : 'text-rose-800'}`}>
+                <h2 className={`text-[20px] font-bold mb-1.5 ${safeguardState === 'confirmed' ? 'text-green-800 dark:text-green-300' : 'text-rose-800 dark:text-rose-300'}`}>
                   {safeguardState === 'confirmed' ? '✅ Budget Safeguard Active' : '🔴 1-Click Budget Safeguard'}
                 </h2>
-                <p className={`text-sm leading-relaxed max-w-[540px] m-0 ${safeguardState === 'confirmed' ? 'text-green-700' : 'text-rose-700'}`}>
+                <p className={`text-sm leading-relaxed max-w-[540px] m-0 ${safeguardState === 'confirmed' ? 'text-green-700 dark:text-green-400' : 'text-rose-700 dark:text-rose-400'}`}>
                   {safeguardState === 'confirmed'
                     ? `Non-essential bookings are paused for ${atRisk.length} participant${atRisk.length !== 1 ? 's' : ''}. Coordinators and families have been notified.`
                     : `${atRisk.length} participant${atRisk.length !== 1 ? 's are' : ' is'} at risk of exhausting NDIS plan funds before the plan period ends.`}
@@ -258,12 +276,12 @@ export default function CoordinatorPage() {
                 const h      = HC[health];
                 const pct    = ((p.allocatedBudget - p.remainingBudget) / p.allocatedBudget) * 100;
                 return (
-                  <div key={p.id} className="bg-white/70 rounded-2xl p-3.5">
+                  <div key={p.id} className="bg-white/70 dark:bg-slate-700/70 rounded-2xl p-3.5">
                     <div className="flex justify-between mb-2">
                       <span className="font-bold text-sm text-navy"><MaskedText value={p.name} /></span>
                       <span className={`badge ${STATUS_BADGE[health]}`}>{h.label}</span>
                     </div>
-                    <div className="h-1.5 rounded-full overflow-hidden mb-1.5 bg-black/[0.08]">
+                    <div className="h-1.5 rounded-full overflow-hidden mb-1.5 bg-black/[0.08] dark:bg-white/[0.08]">
                       <div className="h-full rounded-full" style={{ width: `${pct}%`, background: h.bar }} />
                     </div>
                     <div className="text-xs text-muted-light font-semibold">
@@ -288,7 +306,7 @@ export default function CoordinatorPage() {
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`text-left p-4 rounded-[20px] cursor-pointer border-2 transition-all font-sans bg-white ${
+                  className={`text-left p-4 rounded-[20px] cursor-pointer border-2 transition-all font-sans bg-white dark:bg-slate-800 ${
                     isSel
                       ? 'border-brand shadow-brand-ring'
                       : 'border-surface-border shadow-card hover:border-surface-input'
@@ -332,7 +350,7 @@ export default function CoordinatorPage() {
                 </div>
                 <div className="flex justify-between mb-2.5 font-semibold text-sm">
                   <span className="text-navy">Remaining</span>
-                  <span style={{ color: detail.health === 'red' ? '#be123c' : '#162033' }}>
+                  <span className={detail.health === 'red' ? 'text-rose-700 dark:text-rose-400' : 'text-navy dark:text-white'}>
                     <MaskedText value={`$${selected.remainingBudget.toLocaleString()}`} type="currency" />
                   </span>
                 </div>
@@ -368,23 +386,22 @@ export default function CoordinatorPage() {
 
               <div
                 id="burnrate-alert"
-                className="rounded-[18px] p-4 mb-3.5 border transition-all"
-                style={{ background: hc.bg, borderColor: hc.border }}
+                className={`rounded-[18px] p-4 mb-3.5 border transition-all ${ac.box}`}
               >
                 <div className="flex justify-between items-start gap-3 flex-wrap">
-                  <span className="font-bold text-sm leading-snug" style={{ color: hc.text }}>
+                  <span className={`font-bold text-sm leading-snug ${ac.text}`}>
                     {detail.health === 'red'
                       ? '🔴 Critical — funding will run out before plan end'
                       : detail.health === 'amber'
                       ? '🟡 Budget depletion risk — monitor closely'
                       : '🟢 Plan funding is on track'}
                   </span>
-                  <span className="badge text-[11px] whitespace-nowrap" style={{ background: hc.badge, color: hc.badgeText }}>
+                  <span className={`badge text-[11px] whitespace-nowrap ${ac.badge}`}>
                     {hc.label}
                   </span>
                 </div>
                 {detail.projectedRunout && (
-                  <p className="text-[13px] leading-relaxed mt-2.5 mb-0" style={{ color: hc.text }}>
+                  <p className={`text-[13px] leading-relaxed mt-2.5 mb-0 ${ac.text}`}>
                     At the current burn rate, funding will be exhausted before the plan end date. Consider reviewing support hours or activating the Budget Safeguard above.
                   </p>
                 )}
@@ -460,10 +477,10 @@ export default function CoordinatorPage() {
                   key={entry.id}
                   className={`rounded-[16px] border p-3.5 transition-all ${
                     entry.status === 'active'
-                      ? 'bg-green-50 border-green-200'
+                      ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
                       : entry.status === 'no-show'
-                      ? 'bg-rose-50 border-rose-200'
-                      : 'bg-white border-surface-border'
+                      ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800'
+                      : 'bg-white dark:bg-slate-800 border-surface-border dark:border-slate-700'
                   }`}
                 >
                   {/* Mobile layout */}

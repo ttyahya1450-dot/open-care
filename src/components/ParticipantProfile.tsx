@@ -47,7 +47,7 @@ export default function ParticipantProfile({ profile, compact = false }: Props) 
 
       {/* Care Requirements */}
       <div>
-        <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-rose-400 mb-2">
+        <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-rose-600 dark:text-rose-400 mb-2">
           Care Requirements
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -71,7 +71,7 @@ export default function ParticipantProfile({ profile, compact = false }: Props) 
 
       {/* Core Preferences */}
       <div>
-        <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-purple-500 mb-2">
+        <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-purple-600 dark:text-purple-400 mb-2">
           Core Preferences
         </div>
         <div className="flex flex-wrap gap-1.5">

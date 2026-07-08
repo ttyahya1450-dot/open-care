@@ -251,7 +251,7 @@ export default function AuthPage() {
                 </p>
 
                 {/* Countdown timer */}
-                <div className="inline-block bg-rose-50 border-2 border-rose-200 rounded-[20px] px-8 py-5 mb-5">
+                <div className="inline-block bg-rose-50 dark:bg-rose-900/20 border-2 border-rose-200 dark:border-rose-700 rounded-[20px] px-8 py-5 mb-5">
                   <div className="text-[44px] font-extrabold font-mono text-rose-600 leading-none tracking-wider tabular-nums">
                     {mm}:{ss}
                   </div>
@@ -340,7 +340,7 @@ export default function AuthPage() {
                       })}
                     </div>
 
-                    <div className="mt-3 flex items-center gap-2 bg-brand-xlight border border-brand-border rounded-xl px-3.5 py-2.5">
+                    <div className="mt-3 flex items-center gap-2 bg-brand-xlight dark:bg-brand/10 border border-brand-border dark:border-brand/30 rounded-xl px-3.5 py-2.5">
                       <span className="text-sm">✨</span>
                       <span className="text-[12px] text-brand-mid font-semibold">
                         Your profile will be pre-filled with realistic defaults for {selectedMeta.label}s — edit anytime.
@@ -404,7 +404,7 @@ export default function AuthPage() {
 
                 {/* Attempt counter warning */}
                 {attemptCount > 0 && attemptCount < MAX_ATTEMPTS && !error.includes('Invalid') && (
-                  <div className="mt-3 px-4 py-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                  <div className="mt-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl">
                     <div className="flex gap-1.5">
                       {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => (
                         <div
@@ -413,14 +413,14 @@ export default function AuthPage() {
                         />
                       ))}
                     </div>
-                    <p className="text-amber-700 text-[11px] font-semibold mt-1.5">
+                    <p className="text-amber-700 dark:text-amber-300 text-[11px] font-semibold mt-1.5">
                       {attemptCount} of {MAX_ATTEMPTS} failed attempts · Account locks at {MAX_ATTEMPTS}
                     </p>
                   </div>
                 )}
 
                 {error && (
-                  <div className="mt-3.5 px-4 py-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-[13px] font-semibold">
+                  <div className="mt-3.5 px-4 py-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-700 rounded-xl text-rose-700 dark:text-rose-300 text-[13px] font-semibold">
                     {error}
                   </div>
                 )}

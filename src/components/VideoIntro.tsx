@@ -53,7 +53,7 @@ export default function VideoIntro({
 
   return (
     <div
-      className="rounded-[20px] overflow-hidden border border-surface-border shadow-card"
+      className="rounded-[20px] overflow-hidden border border-surface-border dark:border-slate-700 shadow-card"
       style={{ background: `linear-gradient(150deg, ${accentColor}22 0%, ${accentColor}08 100%)` }}
     >
       {/* Visualiser / poster */}
