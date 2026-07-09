@@ -55,7 +55,7 @@ export default function ShiftNotesExport() {
         <button
           onClick={handleExport}
           disabled={exportState === 'generating'}
-          className={`px-5 py-2.5 rounded-xl border-none font-bold text-sm cursor-pointer transition-all whitespace-nowrap ${
+          className={`px-5 py-2.5 min-h-[44px] rounded-xl border-none font-bold text-sm cursor-pointer transition-all whitespace-nowrap ${
             exportState === 'done'
               ? 'bg-green-500 text-white cursor-default shadow-green-glow'
               : exportState === 'generating'
@@ -88,7 +88,7 @@ export default function ShiftNotesExport() {
                 <button
                   key={m}
                   onClick={() => setMood(m)}
-                  className={`px-3.5 py-2 rounded-xl border font-semibold text-[13px] cursor-pointer transition-all ${
+                  className={`px-3.5 py-2 min-h-[44px] rounded-xl border font-semibold text-[13px] cursor-pointer transition-all ${
                     sel
                       ? `${meta.cardBg} ${meta.text} ${meta.cardBorder} shadow-sm`
                       : 'bg-white dark:bg-slate-800 border-surface-divider dark:border-slate-600 text-muted-light dark:text-slate-400 hover:border-surface-input dark:hover:border-slate-500'
@@ -112,7 +112,7 @@ export default function ShiftNotesExport() {
         <button
           onClick={addNote}
           disabled={!noteText.trim()}
-          className={`w-full py-2.5 rounded-xl border-none font-bold text-sm cursor-pointer transition-all ${
+          className={`w-full py-2.5 min-h-[44px] rounded-xl border-none font-bold text-sm cursor-pointer transition-all ${
             noteText.trim()
               ? 'bg-brand-gradient text-white shadow-brand-btn hover:opacity-90'
               : 'bg-surface-muted dark:bg-slate-800 text-muted-lighter dark:text-slate-600 cursor-not-allowed'

@@ -227,13 +227,13 @@ export default function CareTeamCalendar() {
           </div>
           <div className="flex gap-2">
             {selectedShift.isSwapRequested && (
-              <button className="px-3.5 py-2 rounded-[10px] bg-brand text-white border-none font-bold text-xs cursor-pointer hover:opacity-90">
+              <button className="px-3.5 py-2 min-h-[44px] rounded-[10px] bg-brand text-white border-none font-bold text-xs cursor-pointer hover:opacity-90">
                 Approve swap
               </button>
             )}
             <button
               onClick={() => setSelectedShift(null)}
-              className="px-3.5 py-2 rounded-[10px] border border-surface-divider dark:border-slate-600 bg-white dark:bg-slate-800 text-muted-light dark:text-slate-400 font-semibold text-xs cursor-pointer hover:bg-surface-muted dark:hover:bg-slate-700 transition-colors"
+              className="px-3.5 py-2 min-h-[44px] rounded-[10px] border border-surface-divider dark:border-slate-600 bg-white dark:bg-slate-800 text-muted-light dark:text-slate-400 font-semibold text-xs cursor-pointer hover:bg-surface-muted dark:hover:bg-slate-700 transition-colors"
             >
               Dismiss
             </button>

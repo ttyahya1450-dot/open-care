@@ -227,7 +227,7 @@ export default function WorkersPage() {
             <div className="card">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <div className="text-[30px] font-extrabold tracking-tight text-navy">
+                  <div className="text-[30px] font-extrabold tracking-tight text-navy dark:text-white">
                     ${profile.rate}
                     <span className="text-[14px] font-semibold text-muted-light">/hr</span>
                   </div>
@@ -246,7 +246,7 @@ export default function WorkersPage() {
                   { value: '3 yrs', label: 'Experience' },
                 ].map(({ value, label }) => (
                   <div key={label} className="bg-surface rounded-xl p-3 text-center border border-surface-border">
-                    <div className="text-[18px] font-extrabold tracking-tight text-navy">{value}</div>
+                    <div className="text-[18px] font-extrabold tracking-tight text-navy dark:text-white">{value}</div>
                     <div className="text-[11px] text-muted-light font-semibold">{label}</div>
                   </div>
                 ))}
@@ -259,12 +259,12 @@ export default function WorkersPage() {
                 className={`rounded-[20px] p-5 border-2 transition-all duration-200 ${
                   lastMinute
                     ? 'bg-pink-standby border-pink-400 shadow-pink-ring'
-                    : 'bg-white border-surface-border shadow-card'
+                    : 'bg-white dark:bg-slate-800 border-surface-border dark:border-slate-700 shadow-card'
                 }`}
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="font-bold text-[15px] text-navy mb-1">⚡ Standby shift availability</div>
+                    <div className="font-bold text-[15px] text-navy dark:text-slate-100 mb-1">⚡ Standby shift availability</div>
                     <div className={`text-[13px] leading-snug ${lastMinute ? 'text-pink-700' : 'text-muted-light'}`}>
                       {lastMinute
                         ? 'You are visible for last-minute shifts today'
@@ -318,7 +318,7 @@ export default function WorkersPage() {
         <div id="worker-strengths" className="card-lg">
           <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
             <div>
-              <h2 className="text-[20px] font-bold text-navy m-0">Strengths profile</h2>
+              <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">Strengths profile</h2>
               <p className="text-muted-light text-sm mt-1.5">
                 Verified by participant feedback and coordinator assessments — not star ratings.
               </p>
@@ -367,7 +367,7 @@ export default function WorkersPage() {
             <div className="card-lg">
               <div className="flex justify-between items-start flex-wrap gap-3 mb-5">
                 <div>
-                  <h2 className="text-[20px] font-bold text-navy m-0">Incoming Shift Requests</h2>
+                  <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">Incoming Shift Requests</h2>
                   <p className="text-muted-light text-sm mt-1.5">
                     Review participant profiles before accepting — tap any request to see full care details.
                   </p>
@@ -384,7 +384,7 @@ export default function WorkersPage() {
               {pendingRequests.length === 0 && (
                 <div className="bg-surface rounded-[18px] p-8 text-center border border-surface-border mb-4">
                   <div className="text-[28px] mb-2">📭</div>
-                  <div className="font-bold text-navy mb-1">No pending requests</div>
+                  <div className="font-bold text-navy dark:text-slate-100 mb-1">No pending requests</div>
                   <div className="text-muted-light text-sm">New shift requests will appear here when coordinators send them.</div>
                 </div>
               )}
@@ -395,7 +395,7 @@ export default function WorkersPage() {
                   const isOpen   = expandedReqId === req.id;
 
                   return (
-                    <div key={req.id} className="rounded-[18px] border-2 border-surface-border bg-white overflow-hidden transition-all">
+                    <div key={req.id} className="rounded-[18px] border-2 border-surface-border dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden transition-all">
                       {/* Request header */}
                       <button
                         onClick={() => setExpandedReqId(isOpen ? null : req.id)}
@@ -407,7 +407,7 @@ export default function WorkersPage() {
                               {req.profile.initials}
                             </div>
                             <div>
-                              <div className="font-bold text-[15px] text-navy">{req.participant}</div>
+                              <div className="font-bold text-[15px] text-navy dark:text-slate-100">{req.participant}</div>
                               <div className="text-[12px] text-muted-light mt-0.5">
                                 {req.serviceType} · {req.date} · {req.timeStart} · {req.duration}h
                               </div>
@@ -443,9 +443,9 @@ export default function WorkersPage() {
                               { label: 'Duration', value: `${req.duration}h` },
                               { label: 'Payout',   value: `$${payout}` },
                             ].map(({ label, value }) => (
-                              <div key={label} className="bg-surface rounded-xl p-2.5 border border-surface-border">
-                                <div className="text-[10px] text-muted-lighter font-bold uppercase tracking-wider mb-0.5">{label}</div>
-                                <div className="font-extrabold text-[14px] text-navy">{value}</div>
+                              <div key={label} className="bg-surface dark:bg-slate-700 rounded-xl p-2.5 border border-surface-border dark:border-slate-600">
+                                <div className="text-[10px] text-muted-lighter dark:text-slate-400 font-bold uppercase tracking-wider mb-0.5">{label}</div>
+                                <div className="font-extrabold text-[14px] text-navy dark:text-white">{value}</div>
                               </div>
                             ))}
                           </div>
@@ -460,7 +460,7 @@ export default function WorkersPage() {
                             </button>
                             <button
                               onClick={() => respondToRequest(req.id, 'declined')}
-                              className="px-5 min-h-[48px] py-3 rounded-[14px] border border-surface-divider bg-white text-muted-dark font-bold text-[14px] cursor-pointer hover:bg-surface-muted active:scale-[0.97] transition-all"
+                              className="px-5 min-h-[48px] py-3 rounded-[14px] border border-surface-divider dark:border-slate-600 bg-white dark:bg-slate-700 text-muted-dark dark:text-slate-300 font-bold text-[14px] cursor-pointer hover:bg-surface-muted dark:hover:bg-slate-600 active:scale-[0.97] transition-all"
                             >
                               Decline
                             </button>
@@ -478,9 +478,9 @@ export default function WorkersPage() {
                   <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-muted-lighter mb-3">Previously resolved</div>
                   <div className="grid gap-2">
                     {resolvedRequests.map((req) => (
-                      <div key={req.id} className="flex justify-between items-center px-4 py-3 bg-surface rounded-[14px] border border-surface-border">
+                      <div key={req.id} className="flex justify-between items-center px-4 py-3 bg-surface dark:bg-slate-700 rounded-[14px] border border-surface-border dark:border-slate-600">
                         <div>
-                          <span className="font-semibold text-[13px] text-muted-dark">{req.participant}</span>
+                          <span className="font-semibold text-[13px] text-muted-dark dark:text-slate-300">{req.participant}</span>
                           <span className="text-[12px] text-muted-lighter ml-2">{req.serviceType} · {req.date}</span>
                         </div>
                         <span className={`badge border text-[11px] ${
@@ -573,7 +573,7 @@ export default function WorkersPage() {
         {!isWorkerView && (
           <div className="card-lg flex justify-between items-center flex-wrap gap-4">
             <div>
-              <div className="font-bold text-[17px] text-navy mb-1">Ready to book {profile.name}?</div>
+              <div className="font-bold text-[17px] text-navy dark:text-white mb-1">Ready to book {profile.name}?</div>
               <div className="text-muted-light text-sm">Available this week · ${profile.rate}/hr · {profile.suburb}</div>
             </div>
             <Link href="/checkout" className="btn-primary text-[15px] px-7 py-3.5">

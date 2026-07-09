@@ -72,7 +72,7 @@ export default function StripeLedger() {
         <button
           onClick={handleSettle}
           disabled={settling || pendCount + itCount === 0}
-          className={`px-4 py-2.5 rounded-2xl border-none font-bold text-[13px] cursor-pointer transition-all whitespace-nowrap ${
+          className={`px-4 py-2.5 min-h-[44px] rounded-2xl border-none font-bold text-[13px] cursor-pointer transition-all whitespace-nowrap ${
             settling || pendCount + itCount === 0
               ? 'bg-surface-muted text-muted-lighter cursor-not-allowed dark:bg-slate-800 dark:text-slate-600'
               : 'bg-gradient-to-br from-navy to-navy-light text-white shadow-md hover:opacity-90'
@@ -115,7 +115,7 @@ export default function StripeLedger() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`flex-1 py-1.5 rounded-[9px] border-none font-bold text-[11px] cursor-pointer transition-all ${
+            className={`flex-1 py-2.5 min-h-[44px] rounded-[9px] border-none font-bold text-[11px] cursor-pointer transition-all ${
               filter === f
                 ? 'bg-white dark:bg-slate-700 text-navy dark:text-white shadow-sm'
                 : 'bg-transparent text-muted-light dark:text-slate-400 hover:text-navy dark:hover:text-white'

@@ -154,7 +154,7 @@ export default function NDISClaimsProcessor() {
         <button
           onClick={handleDownload}
           disabled={downloadState !== 'idle' || validShifts.length === 0}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border-none font-bold text-[13px] cursor-pointer transition-all whitespace-nowrap ${
+          className={`flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-2xl border-none font-bold text-[13px] cursor-pointer transition-all whitespace-nowrap ${
             downloadState === 'generating'
               ? 'bg-surface-muted text-muted-lighter cursor-not-allowed dark:bg-slate-800 dark:text-slate-500'
               : downloadState === 'ready'
@@ -204,6 +204,17 @@ export default function NDISClaimsProcessor() {
           </div>
         </div>
       </div>
+
+      {/* Empty state */}
+      {validShifts.length === 0 && skippedShifts.length === 0 && (
+        <div className="rounded-[16px] border border-surface-border dark:border-slate-700 bg-surface dark:bg-slate-800 p-8 text-center mb-4">
+          <div className="text-[28px] mb-2">📋</div>
+          <div className="font-bold text-navy dark:text-slate-100 mb-1">No shift records yet</div>
+          <div className="text-sm text-muted-light dark:text-slate-400">
+            Completed and verified shifts will appear here, ready for PRODA/PACE export.
+          </div>
+        </div>
+      )}
 
       {/* Valid shifts table */}
       {validShifts.length > 0 && (

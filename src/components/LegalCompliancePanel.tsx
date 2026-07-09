@@ -95,7 +95,7 @@ export default function LegalCompliancePanel() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3.5 py-1.5 rounded-[9px] border-none font-bold text-[12px] cursor-pointer transition-all capitalize ${
+            className={`px-3.5 py-2.5 min-h-[44px] rounded-[9px] border-none font-bold text-[12px] cursor-pointer transition-all capitalize ${
               filter === f
                 ? 'bg-white dark:bg-slate-800 text-navy dark:text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]'
                 : 'bg-transparent text-muted-light dark:text-slate-400 hover:text-navy dark:hover:text-slate-200'
@@ -117,6 +117,20 @@ export default function LegalCompliancePanel() {
           <div>Signed at</div>
           <div>Terms version</div>
         </div>
+
+        {filtered.length === 0 && (
+          <div className="rounded-[14px] border border-surface-border dark:border-slate-700 bg-surface dark:bg-slate-800 py-8 text-center">
+            <div className="text-[28px] mb-2">{filter === 'signed' ? '📋' : '✅'}</div>
+            <div className="font-bold text-navy dark:text-slate-100 mb-1">
+              {filter === 'signed' ? 'No signed consents yet' : 'No pending consents'}
+            </div>
+            <div className="text-sm text-muted-light dark:text-slate-400">
+              {filter === 'signed'
+                ? 'Users will appear here once they complete the OpenCare Service Agreement.'
+                : 'All users have completed the consent flow — nothing pending.'}
+            </div>
+          </div>
+        )}
 
         {filtered.map((row) => {
           const signed   = !!row.consent;

@@ -322,6 +322,12 @@ export default function GeofenceMonitor({ viewOnly = false }: GeofenceMonitorPro
           No geofence checks recorded yet. Workers must check in via the Worker Portal.
         </div>
       )}
+
+      {recentChecks.length === 0 && !viewOnly && (
+        <div className="text-center py-6 text-muted-light dark:text-slate-400 text-sm bg-surface dark:bg-slate-800 rounded-[14px] border border-surface-border dark:border-slate-700">
+          No check-in history yet — tap <strong className="text-navy dark:text-slate-200">Simulate At Address</strong> above to run your first GPS verification.
+        </div>
+      )}
     </div>
   );
 }

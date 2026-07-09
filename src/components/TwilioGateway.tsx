@@ -43,7 +43,8 @@ export default function TwilioGateway() {
 
   useEffect(() => {
     setMessages(getTwilioStore().messages);
-    return () => { timers.current.forEach(clearTimeout); };
+    const t = timers.current;
+    return () => { t.forEach(clearTimeout); };
   }, []);
 
   const schedule = useCallback((fn: () => void, ms: number) => {
@@ -180,7 +181,7 @@ export default function TwilioGateway() {
           <button
             onClick={fireOTP}
             disabled={otpFireState !== 'idle'}
-            className={`w-full py-2.5 rounded-[12px] border-none font-bold text-[13px] cursor-pointer transition-all ${
+            className={`w-full py-3 min-h-[44px] rounded-[12px] border-none font-bold text-[13px] cursor-pointer transition-all ${
               otpFireState !== 'idle'
                 ? 'bg-purple-100 text-purple-600 cursor-not-allowed dark:bg-purple-900/30 dark:text-purple-400'
                 : 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm'
@@ -225,7 +226,7 @@ export default function TwilioGateway() {
           <button
             onClick={fireArrival}
             disabled={smsFireState !== 'idle'}
-            className={`w-full py-2.5 rounded-[12px] border-none font-bold text-[13px] cursor-pointer transition-all ${
+            className={`w-full py-3 min-h-[44px] rounded-[12px] border-none font-bold text-[13px] cursor-pointer transition-all ${
               smsFireState !== 'idle'
                 ? 'bg-green-100 text-green-600 cursor-not-allowed dark:bg-green-900/30 dark:text-green-400'
                 : 'bg-green-600 text-white hover:bg-green-700 shadow-sm'

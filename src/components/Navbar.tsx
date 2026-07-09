@@ -78,17 +78,20 @@ function ThemeToggle({ theme, onToggle }: { theme: string; onToggle: () => void 
       onTouchStart={(e) => { e.preventDefault(); onToggle(); }}
       onClick={onToggle}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-      className="relative w-[52px] h-[28px] rounded-full cursor-pointer border-none outline-none shrink-0
-                 transition-colors duration-300 bg-slate-200 dark:bg-slate-600
-                 focus-visible:ring-2 focus-visible:ring-brand/50"
+      className="inline-flex items-center justify-center w-[52px] min-h-[44px] shrink-0
+                 cursor-pointer border-none outline-none bg-transparent
+                 focus-visible:ring-2 focus-visible:ring-brand/50 rounded-full"
     >
-      <span
-        className="absolute top-[4px] w-[20px] h-[20px] rounded-full bg-white dark:bg-slate-900
-                   shadow-[0_1px_4px_rgba(0,0,0,0.25)] transition-all duration-300
-                   flex items-center justify-center"
-        style={{ left: theme === 'dark' ? '29px' : '3px' }}
-      >
-        {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+      <span className="relative w-[52px] h-[28px] rounded-full block
+                       transition-colors duration-300 bg-slate-200 dark:bg-slate-600">
+        <span
+          className="absolute top-[4px] w-[20px] h-[20px] rounded-full bg-white dark:bg-slate-900
+                     shadow-[0_1px_4px_rgba(0,0,0,0.25)] transition-all duration-300
+                     flex items-center justify-center"
+          style={{ left: theme === 'dark' ? '29px' : '3px' }}
+        >
+          {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+        </span>
       </span>
     </button>
   );
@@ -167,7 +170,7 @@ export default function Navbar() {
                 <button
                   onTouchStart={(e) => { e.preventDefault(); handleSignOut(); }}
                   onClick={handleSignOut}
-                  className="px-3 py-1.5 rounded-[10px] border border-surface-divider dark:border-slate-600
+                  className="px-3 py-1.5 min-h-[44px] rounded-[10px] border border-surface-divider dark:border-slate-600
                              bg-white dark:bg-slate-800 text-muted-light dark:text-slate-400
                              font-bold text-[12px] cursor-pointer hover:bg-surface-muted dark:hover:bg-slate-700 transition-colors"
                 >
@@ -177,7 +180,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/auth"
-                className="ml-2 px-4 py-2 rounded-[10px] bg-brand-gradient text-white font-bold text-[13px] no-underline shadow-brand-sm hover:opacity-90 transition-opacity"
+                className="ml-2 px-4 py-2 min-h-[44px] inline-flex items-center rounded-[10px] bg-brand-gradient text-white font-bold text-[13px] no-underline shadow-brand-sm hover:opacity-90 transition-opacity"
               >
                 Sign In
               </Link>
@@ -205,7 +208,7 @@ export default function Navbar() {
             {!user && (
               <Link
                 href="/auth"
-                className="px-3 py-1.5 min-h-[36px] rounded-[10px] bg-brand-gradient text-white font-bold text-[12px] no-underline shadow-brand-sm hover:opacity-90 transition-opacity flex items-center"
+                className="px-3 py-1.5 min-h-[44px] rounded-[10px] bg-brand-gradient text-white font-bold text-[12px] no-underline shadow-brand-sm hover:opacity-90 transition-opacity flex items-center"
               >
                 Sign In
               </Link>

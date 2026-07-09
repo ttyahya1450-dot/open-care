@@ -201,7 +201,7 @@ export default function AuditPrintView({ participantId }: Props) {
               🖨 Print / Save PDF
             </button>
           </div>
-          <div className="overflow-auto max-h-[600px] p-4">
+          <div className="w-full overflow-x-auto min-h-[500px] p-4">
             <PrintableReport logs={logs} />
           </div>
         </div>

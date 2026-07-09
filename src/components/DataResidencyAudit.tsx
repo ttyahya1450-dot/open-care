@@ -100,7 +100,7 @@ export default function DataResidencyAudit() {
 
         <button
           onClick={refresh}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-[12px] border border-surface-border dark:border-slate-700 bg-white dark:bg-slate-900 text-[12px] font-bold text-muted-dark dark:text-slate-300 cursor-pointer hover:bg-surface dark:hover:bg-slate-800 transition-all"
+          className="flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-[12px] border border-surface-border dark:border-slate-700 bg-white dark:bg-slate-900 text-[12px] font-bold text-muted-dark dark:text-slate-300 cursor-pointer hover:bg-surface dark:hover:bg-slate-800 transition-all"
         >
           ↺ Refresh{refreshedAt ? ` · ${refreshedAt}` : ''}
         </button>
@@ -201,7 +201,7 @@ export default function DataResidencyAudit() {
                 }`}>
                   {e.storageType === 'sessionStorage' ? 'Session' : 'Local'}
                 </span>
-                <span>{fmtBytes(e.byteSize)}</span>
+                <span>{e.present ? fmtBytes(e.byteSize) : '—'}</span>
                 {e.recordCount !== null && <span>{e.recordCount} records</span>}
               </div>
             </div>
@@ -222,7 +222,7 @@ export default function DataResidencyAudit() {
                   {e.storageType === 'sessionStorage' ? 'session' : 'local'}
                 </span>
               </div>
-              <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">{fmtBytes(e.byteSize)}</div>
+              <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">{e.present ? fmtBytes(e.byteSize) : '—'}</div>
               <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">
                 {e.recordCount !== null ? e.recordCount : '—'}
               </div>

@@ -55,13 +55,13 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-checkout-page dark:bg-slate-900 text-navy dark:text-slate-100 overflow-x-hidden transition-colors duration-200">
+    <main className="min-h-screen bg-checkout-page dark:bg-none dark:bg-slate-950 text-navy dark:text-slate-100 overflow-x-hidden transition-colors duration-200">
       <Navbar />
 
       <section className="w-full max-w-md sm:max-w-[1120px] mx-auto overflow-x-hidden px-4 sm:px-5 py-6 sm:py-9 grid gap-5 sm:gap-7">
         <div>
           <p className="section-label mb-2">OpenCare Checkout</p>
-          <h1 className="page-title">Transparent, fair booking pricing</h1>
+          <h1 className="page-title text-slate-900 dark:text-white">Transparent, fair booking pricing</h1>
           <p className="page-sub mt-3 max-w-[700px]">
             See exactly what you pay, what {WORKER_NAME} receives, and how OpenCare&apos;s 12.5% blended fee compares to a traditional agency.
           </p>
