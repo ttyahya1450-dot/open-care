@@ -67,8 +67,8 @@ export default function VideoIntro({
         </div>
 
         <div className="text-center z-10">
-          <div className="font-bold text-[14px] text-navy">{workerName}</div>
-          <div className="text-[12px] text-muted-light mt-0.5">Video introduction</div>
+          <div className="font-bold text-[14px] text-navy dark:text-white">{workerName}</div>
+          <div className="text-[12px] text-muted-light dark:text-slate-400 mt-0.5">Video introduction</div>
         </div>
 
         {/* Animated waveform when playing */}

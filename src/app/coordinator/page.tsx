@@ -278,13 +278,13 @@ export default function CoordinatorPage() {
                 return (
                   <div key={p.id} className="bg-white/70 dark:bg-slate-700/70 rounded-2xl p-3.5">
                     <div className="flex justify-between mb-2">
-                      <span className="font-bold text-sm text-navy"><MaskedText value={p.name} /></span>
+                      <span className="font-bold text-sm text-navy dark:text-white"><MaskedText value={p.name} /></span>
                       <span className={`badge ${STATUS_BADGE[health]}`}>{h.label}</span>
                     </div>
                     <div className="h-1.5 rounded-full overflow-hidden mb-1.5 bg-black/[0.08] dark:bg-white/[0.08]">
                       <div className="h-full rounded-full" style={{ width: `${pct}%`, background: h.bar }} />
                     </div>
-                    <div className="text-xs text-muted-light font-semibold">
+                    <div className="text-xs text-muted-light dark:text-slate-400 font-semibold">
                       <MaskedText value={`$${p.remainingBudget.toLocaleString()}`} type="currency" /> of{' '}
                       <MaskedText value={`$${p.allocatedBudget.toLocaleString()}`} type="currency" /> remaining
                     </div>
@@ -313,13 +313,13 @@ export default function CoordinatorPage() {
                   }`}
                 >
                   <div className="flex justify-between items-center mb-2.5">
-                    <span className="font-bold text-[15px] text-navy"><MaskedText value={p.name} /></span>
+                    <span className="font-bold text-[15px] text-navy dark:text-white"><MaskedText value={p.name} /></span>
                     <span className={`badge ${STATUS_BADGE[health]}`}>{h.label}</span>
                   </div>
                   <div className="h-2 bg-surface-border rounded-full overflow-hidden mb-2">
                     <div className="h-full rounded-full transition-all duration-300" style={{ width: `${pct}%`, background: h.bar }} />
                   </div>
-                  <div className="text-xs text-muted-light font-semibold">
+                  <div className="text-xs text-muted-light dark:text-slate-400 font-semibold">
                     <MaskedText value={`$${p.remainingBudget.toLocaleString()}`} type="currency" /> remaining
                   </div>
                 </button>
@@ -333,8 +333,8 @@ export default function CoordinatorPage() {
             <div className="card-lg">
               <div className="flex justify-between items-start mb-5 flex-wrap gap-3">
                 <div>
-                  <h2 className="text-[21px] font-bold text-navy m-0">Participant plan snapshot</h2>
-                  <p className="text-sm text-muted-light mt-1.5 m-0">
+                  <h2 className="text-[21px] font-bold text-navy dark:text-white m-0">Participant plan snapshot</h2>
+                  <p className="text-sm text-muted-light dark:text-slate-400 mt-1.5 m-0">
                     <MaskedText value={selected.name} /> · <MaskedText value={selected.workerName} />
                   </p>
                 </div>
@@ -344,12 +344,12 @@ export default function CoordinatorPage() {
               </div>
 
               <div className="mb-5">
-                <div className="flex justify-between mb-1.5 font-semibold text-sm text-navy">
+                <div className="flex justify-between mb-1.5 font-semibold text-sm text-navy dark:text-slate-200">
                   <span>Allocated</span>
                   <span><MaskedText value={`$${selected.allocatedBudget.toLocaleString()}`} type="currency" /></span>
                 </div>
                 <div className="flex justify-between mb-2.5 font-semibold text-sm">
-                  <span className="text-navy">Remaining</span>
+                  <span className="text-navy dark:text-slate-200">Remaining</span>
                   <span className={detail.health === 'red' ? 'text-rose-700 dark:text-rose-400' : 'text-navy dark:text-white'}>
                     <MaskedText value={`$${selected.remainingBudget.toLocaleString()}`} type="currency" />
                   </span>
@@ -366,9 +366,9 @@ export default function CoordinatorPage() {
                   { label: 'Plan end date',         value: selected.planEndDate,                          maskType: null, small: true },
                   { label: 'Weekly hours',          value: `${selected.weeklyHours} hrs`,                maskType: null },
                 ].map(({ label, value, alert, small, maskType }) => (
-                  <div key={label} className="bg-surface rounded-2xl p-3.5 border border-surface-border">
-                    <div className="text-xs text-muted-light mb-1.5 font-medium">{label}</div>
-                    <div className={`font-bold ${small ? 'text-sm' : 'text-[20px] tracking-tight'} ${alert ? 'text-rose-700' : 'text-navy'}`}>
+                  <div key={label} className="bg-surface dark:bg-slate-700/50 rounded-2xl p-3.5 border border-surface-border dark:border-slate-600">
+                    <div className="text-xs text-muted-light dark:text-slate-400 mb-1.5 font-medium">{label}</div>
+                    <div className={`font-bold ${small ? 'text-sm' : 'text-[20px] tracking-tight'} ${alert ? 'text-rose-700 dark:text-rose-400' : 'text-navy dark:text-white'}`}>
                       {maskType ? <MaskedText value={value} type={maskType} /> : value}
                     </div>
                   </div>
@@ -378,10 +378,10 @@ export default function CoordinatorPage() {
 
             {/* Burn-rate insight */}
             <div className="card-lg">
-              <h2 className="text-[21px] font-bold text-navy mb-3">Burn-rate insight</h2>
-              <p className="text-muted text-sm leading-relaxed mb-4 m-0">
-                Current recurring care for <strong className="text-navy"><MaskedText value={selected.name} /></strong> is tracking at{' '}
-                <strong className="text-navy"><MaskedText value={`$${detail.burnRate.toFixed(0)}`} type="currency" />/week</strong>.
+              <h2 className="text-[21px] font-bold text-navy dark:text-white mb-3">Burn-rate insight</h2>
+              <p className="text-muted dark:text-slate-400 text-sm leading-relaxed mb-4 m-0">
+                Current recurring care for <strong className="text-navy dark:text-white"><MaskedText value={selected.name} /></strong> is tracking at{' '}
+                <strong className="text-navy dark:text-white"><MaskedText value={`$${detail.burnRate.toFixed(0)}`} type="currency" />/week</strong>.
               </p>
 
               <div
@@ -407,7 +407,7 @@ export default function CoordinatorPage() {
                 )}
               </div>
 
-              <div className="bg-surface rounded-2xl p-4 grid gap-2.5 border border-surface-border">
+              <div className="bg-surface dark:bg-slate-700/50 rounded-2xl p-4 grid gap-2.5 border border-surface-border dark:border-slate-600">
                 {[
                   { label: 'Projected runout',             value: detail.projectedRunout ? 'Before plan end' : 'Within plan period', good: !detail.projectedRunout, isCurrency: false },
                   { label: 'Avg weekly spend',             value: `$${detail.burnRate.toFixed(0)}`,                                  good: null,                     isCurrency: true  },
@@ -415,8 +415,8 @@ export default function CoordinatorPage() {
                   { label: 'Funded weeks at current rate', value: `${detail.projectedWeeks} wks`,                                     good: detail.projectedWeeks >= selected.weeksRemaining, isCurrency: false },
                 ].map(({ label, value, good, isCurrency }) => (
                   <div key={label} className="flex justify-between text-[13px]">
-                    <span className="font-semibold text-muted-dark">{label}</span>
-                    <span className={`font-bold ${good === null ? 'text-navy' : good ? 'text-green-700' : 'text-rose-700'}`}>
+                    <span className="font-semibold text-muted-dark dark:text-slate-300">{label}</span>
+                    <span className={`font-bold ${good === null ? 'text-navy dark:text-white' : good ? 'text-green-700 dark:text-green-400' : 'text-rose-700 dark:text-rose-400'}`}>
                       {isCurrency ? <MaskedText value={value} type="currency" /> : value}
                     </span>
                   </div>
@@ -430,18 +430,18 @@ export default function CoordinatorPage() {
             <div className="flex justify-between items-start flex-wrap gap-3 mb-5">
               <div>
                 <div className="flex items-center gap-2.5 mb-1.5">
-                  <h2 className="text-[20px] font-bold text-navy m-0">Verified Shift Ledger</h2>
+                  <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">Verified Shift Ledger</h2>
                   <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-100 border border-green-200">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                     <span className="text-[11px] font-bold text-green-700 uppercase tracking-wider">Live</span>
                   </span>
                 </div>
-                <p className="text-muted-light text-sm m-0">
+                <p className="text-muted-light dark:text-slate-400 text-sm m-0">
                   Cross-verified clock-in / clock-out records with GPS location confirmation for each shift.
                 </p>
               </div>
 
-              <div className="flex gap-1.5 bg-surface-muted rounded-[12px] p-1 border border-surface-border">
+              <div className="flex gap-1.5 bg-surface-muted dark:bg-slate-700/60 rounded-[12px] p-1 border border-surface-border dark:border-slate-600">
                 {(['all', 'active'] as const).map((f) => (
                   <button
                     key={f}
@@ -449,8 +449,8 @@ export default function CoordinatorPage() {
                     onClick={() => setLedgerFilter(f)}
                     className={`px-3.5 py-1.5 rounded-[9px] border-none font-bold text-[12px] cursor-pointer transition-all capitalize ${
                       ledgerFilter === f
-                        ? 'bg-white text-navy shadow-[0_1px_4px_rgba(0,0,0,0.1)]'
-                        : 'bg-transparent text-muted-light hover:text-navy'
+                        ? 'bg-white dark:bg-slate-600 text-navy dark:text-white shadow-[0_1px_4px_rgba(0,0,0,0.1)]'
+                        : 'bg-transparent text-muted-light dark:text-slate-400 hover:text-navy dark:hover:text-white'
                     }`}
                   >
                     {f === 'all' ? 'All shifts' : '🟢 Active now'}
@@ -489,8 +489,8 @@ export default function CoordinatorPage() {
                       {entry.workerInitials}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-[14px] text-navy"><MaskedText value={entry.workerName} /></div>
-                      <div className="text-[12px] text-muted-light">
+                      <div className="font-bold text-[14px] text-navy dark:text-white"><MaskedText value={entry.workerName} /></div>
+                      <div className="text-[12px] text-muted-light dark:text-slate-400">
                         → <MaskedText value={entry.participantName} /> · {entry.serviceType}
                       </div>
                       <div className="text-[11px] text-muted-lighter mt-0.5">
@@ -500,11 +500,11 @@ export default function CoordinatorPage() {
                         <span className="text-[11px] font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
                           ↓ {entry.clockIn}
                         </span>
-                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${entry.clockOut ? 'text-muted-dark bg-surface border border-surface-border' : 'text-green-700 bg-green-100 border border-green-200'}`}>
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${entry.clockOut ? 'text-muted-dark dark:text-slate-300 bg-surface dark:bg-slate-700 border border-surface-border dark:border-slate-600' : 'text-green-700 bg-green-100 border border-green-200'}`}>
                           ↑ {entry.clockOut ?? 'In progress'}
                         </span>
                         {entry.durationHrs !== null && entry.durationHrs > 0 && (
-                          <span className="text-[11px] font-bold text-navy bg-white border border-surface-border px-2 py-0.5 rounded-full">
+                          <span className="text-[11px] font-bold text-navy dark:text-slate-100 bg-white dark:bg-slate-700 border border-surface-border dark:border-slate-600 px-2 py-0.5 rounded-full">
                             {entry.durationHrs}h
                           </span>
                         )}
@@ -530,12 +530,12 @@ export default function CoordinatorPage() {
                     </div>
 
                     <div>
-                      <div className="font-bold text-[13px] text-navy"><MaskedText value={entry.workerName} /></div>
-                      <div className="text-[11px] text-muted-lighter mt-0.5">{entry.serviceType}</div>
+                      <div className="font-bold text-[13px] text-navy dark:text-white"><MaskedText value={entry.workerName} /></div>
+                      <div className="text-[11px] text-muted-lighter dark:text-slate-500 mt-0.5">{entry.serviceType}</div>
                     </div>
 
                     <div>
-                      <div className="font-semibold text-[13px] text-muted-dark"><MaskedText value={entry.participantName} /></div>
+                      <div className="font-semibold text-[13px] text-muted-dark dark:text-slate-300"><MaskedText value={entry.participantName} /></div>
                       <div className="text-[11px] text-muted-lighter mt-0.5">
                         📍 <MaskedText value={entry.location} type="suburb" />
                       </div>
@@ -552,7 +552,7 @@ export default function CoordinatorPage() {
                     <div>
                       {entry.clockOut ? (
                         <div>
-                          <div className="font-mono text-[13px] font-bold text-muted-dark">{entry.clockOut}</div>
+                          <div className="font-mono text-[13px] font-bold text-muted-dark dark:text-slate-300">{entry.clockOut}</div>
                           {entry.durationHrs !== null && entry.durationHrs > 0 && (
                             <div className="text-[11px] text-muted-lighter mt-0.5">
                               {entry.durationHrs}h · <MaskedText value={`$${(entry.durationHrs * entry.hourlyRate * 1.05).toFixed(2)}`} type="currency" /> billed
@@ -589,7 +589,7 @@ export default function CoordinatorPage() {
             </div>
 
             {/* Ledger summary bar */}
-            <div className="mt-4 pt-4 border-t border-surface-border flex flex-wrap gap-4 text-[13px]">
+            <div className="mt-4 pt-4 border-t border-surface-border dark:border-slate-700 flex flex-wrap gap-4 text-[13px]">
               {[
                 { label: 'Total shifts',  value: shiftLedger.length.toString() },
                 { label: 'Active now',    value: shiftLedger.filter((s) => s.status === 'active').length.toString(), highlight: true },
@@ -597,8 +597,8 @@ export default function CoordinatorPage() {
                 { label: 'No-shows',      value: shiftLedger.filter((s) => s.status === 'no-show').length.toString(), warn: true },
               ].map(({ label, value, highlight, warn }) => (
                 <div key={label} className="flex items-center gap-2">
-                  <span className="text-muted-light font-medium">{label}:</span>
-                  <span className={`font-extrabold ${highlight ? 'text-green-700' : warn ? 'text-rose-600' : 'text-navy'}`}>{value}</span>
+                  <span className="text-muted-light dark:text-slate-400 font-medium">{label}:</span>
+                  <span className={`font-extrabold ${highlight ? 'text-green-700 dark:text-green-400' : warn ? 'text-rose-600 dark:text-rose-400' : 'text-navy dark:text-white'}`}>{value}</span>
                 </div>
               ))}
             </div>
