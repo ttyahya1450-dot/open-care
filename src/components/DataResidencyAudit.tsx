@@ -34,16 +34,16 @@ const CLASS_BADGE: Record<Classification, { label: string; cls: string }> = {
 const CATALOGUE_SPEC: Array<{
   key: string; label: string; storageType: StorageType; classification: Classification;
 }> = [
-  { key: 'opencare_data_v1',           label: 'Main DataStore',         storageType: 'localStorage',   classification: 'pii-sensitive' },
-  { key: 'opencare_legal_v1',          label: 'Legal Consent Records',  storageType: 'localStorage',   classification: 'pii-sensitive' },
-  { key: 'opencare_ratelimit_v1',      label: 'Rate Limit Engine',      storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_data_v1',           label: 'App Data',               storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_legal_v1',          label: 'Signed Agreements',      storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_ratelimit_v1',      label: 'Security Rate Limits',   storageType: 'localStorage',   classification: 'operational'   },
   { key: 'opencare_security_audit_v1', label: 'Security Audit Log',     storageType: 'localStorage',   classification: 'operational'   },
-  { key: 'opencare_auth_v1',           label: 'Auth Session',           storageType: 'localStorage',   classification: 'pii-sensitive' },
-  { key: 'opencare_stripe_v1',         label: 'Stripe Connect Ledger',  storageType: 'localStorage',   classification: 'pii-sensitive' },
-  { key: 'opencare_twilio_v1',         label: 'Twilio Gateway Log',     storageType: 'localStorage',   classification: 'operational'   },
-  { key: 'opencare_geofence_v1',       label: 'Geofence Audit Trail',   storageType: 'localStorage',   classification: 'operational'   },
-  { key: 'opencare_otp_v1',            label: 'Active OTP Session',     storageType: 'sessionStorage', classification: 'session'       },
-  { key: 'opencare_sms_shown',         label: 'SMS Banner Guard',       storageType: 'sessionStorage', classification: 'session'       },
+  { key: 'opencare_auth_v1',           label: 'Login Session',          storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_stripe_v1',         label: 'Payment Records',        storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_twilio_v1',         label: 'Notifications Log',      storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_geofence_v1',       label: 'Location Check Log',     storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_otp_v1',            label: 'Login Code Session',     storageType: 'sessionStorage', classification: 'session'       },
+  { key: 'opencare_sms_shown',         label: 'Alert Banner State',     storageType: 'sessionStorage', classification: 'session'       },
 ];
 
 function readEntry(spec: typeof CATALOGUE_SPEC[number]): CatalogueEntry {

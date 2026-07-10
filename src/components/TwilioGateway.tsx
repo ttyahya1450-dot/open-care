@@ -28,6 +28,13 @@ const DELIVERY_STYLE: Record<TwilioDeliveryStatus, string> = {
   failed:    'bg-rose-100 text-rose-700 border border-rose-200',
 };
 
+const DELIVERY_LABEL: Record<TwilioDeliveryStatus, string> = {
+  queued:    'Preparing',
+  sending:   'Sending',
+  delivered: 'Delivered',
+  failed:    'Failed',
+};
+
 function fmtTs(iso: string) {
   return new Date(iso).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
@@ -126,7 +133,7 @@ export default function TwilioGateway() {
 
   const pipelineLabel = (s: FireState) => {
     if (s === 'idle')      return '';
-    if (s === 'queuing')   return 'Queuing…';
+    if (s === 'queuing')   return 'Preparing…';
     if (s === 'sending')   return 'Sending…';
     return 'Delivered ✓';
   };
@@ -136,13 +143,13 @@ export default function TwilioGateway() {
       {/* Header */}
       <div className="mb-5">
         <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
-          <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">Twilio Communication Gateway</h2>
+          <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">System Notifications Test</h2>
           <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700">
             Simulated
           </span>
         </div>
         <p className="text-sm text-muted-light dark:text-slate-400 m-0">
-          Fire transactional SMS events into the delivery pipeline — all stored locally, zero real network calls.
+          Test how automated text alerts and security codes look on a mobile phone.
         </p>
       </div>
 
@@ -153,8 +160,8 @@ export default function TwilioGateway() {
           <div className="flex items-center gap-2 mb-3">
             <span className="text-[18px]">🔑</span>
             <div>
-              <div className="font-bold text-[14px] text-navy dark:text-white">Fire 2FA Code</div>
-              <div className="text-[11px] text-muted-light dark:text-slate-400">6-digit OTP via SMS</div>
+              <div className="font-bold text-[14px] text-navy dark:text-white">Test Login Code</div>
+              <div className="text-[11px] text-muted-light dark:text-slate-400">See how a login security code appears on a phone</div>
             </div>
           </div>
 
@@ -172,8 +179,8 @@ export default function TwilioGateway() {
                   </span>. Valid for 5 minutes.
                 </div>
               </div>
-              <div className="mt-1.5 text-[10px] text-slate-500 font-mono">
-                SID: SM{inlineOTP}abc…
+              <div className="mt-1.5 text-[10px] text-slate-500">
+                Sent securely to device
               </div>
             </div>
           )}
@@ -187,7 +194,7 @@ export default function TwilioGateway() {
                 : 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm'
             }`}
           >
-            {otpFireState === 'idle' ? 'Fire 2FA Code' : pipelineLabel(otpFireState)}
+            {otpFireState === 'idle' ? 'Send Test Login Code' : pipelineLabel(otpFireState)}
           </button>
 
           {otpFireState !== 'idle' && (
@@ -200,8 +207,8 @@ export default function TwilioGateway() {
           <div className="flex items-center gap-2 mb-3">
             <span className="text-[18px]">📍</span>
             <div>
-              <div className="font-bold text-[14px] text-navy dark:text-white">Fire Arrival Alert</div>
-              <div className="text-[11px] text-muted-light dark:text-slate-400">"10 minutes away" SMS banner</div>
+              <div className="font-bold text-[14px] text-navy dark:text-white">Test Arrival Notice</div>
+              <div className="text-[11px] text-muted-light dark:text-slate-400">See how a worker arrival alert looks on a phone</div>
             </div>
           </div>
 
@@ -218,7 +225,7 @@ export default function TwilioGateway() {
                 </div>
               </div>
               <div className="mt-2 text-[10px] text-green-400 bg-green-900/30 rounded-lg px-2 py-1">
-                Session guard cleared — banner re-fires on next participant login
+                Alert will appear again on next login
               </div>
             </div>
           )}
@@ -232,7 +239,7 @@ export default function TwilioGateway() {
                 : 'bg-green-600 text-white hover:bg-green-700 shadow-sm'
             }`}
           >
-            {smsFireState === 'idle' ? 'Fire Arrival Alert' : pipelineLabel(smsFireState)}
+            {smsFireState === 'idle' ? 'Send Test Arrival Notice' : pipelineLabel(smsFireState)}
           </button>
 
           {smsFireState !== 'idle' && (
@@ -244,12 +251,12 @@ export default function TwilioGateway() {
       {/* Message outbox */}
       <div>
         <h3 className="text-[14px] font-bold text-navy dark:text-white mb-3">
-          Outbox ({messages.length})
+          Sent Messages ({messages.length})
         </h3>
 
         {messages.length === 0 ? (
           <div className="text-center py-6 text-muted-light dark:text-slate-400 text-sm bg-surface dark:bg-slate-800 rounded-[14px] border border-surface-border dark:border-slate-700">
-            No messages yet — fire an event above.
+            No messages sent yet — test an alert above.
           </div>
         ) : (
           <div className="grid gap-2">
@@ -258,7 +265,7 @@ export default function TwilioGateway() {
               className="hidden sm:grid text-[10px] font-extrabold uppercase tracking-[0.08em] text-muted-lighter dark:text-slate-500 px-3"
               style={{ gridTemplateColumns: '160px 100px 90px 80px 80px' }}
             >
-              <div>SID</div>
+              <div>Reference</div>
               <div>Type</div>
               <div>Status</div>
               <div>Created</div>
@@ -274,21 +281,21 @@ export default function TwilioGateway() {
                   <span className={`badge text-[10px] ${TYPE_STYLE[m.type] ?? 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
                     {TYPE_LABEL[m.type] ?? m.type}
                   </span>
-                  <span className={`badge text-[10px] ${DELIVERY_STYLE[m.status]}`}>{m.status}</span>
+                  <span className={`badge text-[10px] ${DELIVERY_STYLE[m.status]}`}>{DELIVERY_LABEL[m.status]}</span>
                 </div>
 
                 <div
                   className="hidden sm:grid items-center gap-3"
                   style={{ gridTemplateColumns: '160px 100px 90px 80px 80px' }}
                 >
-                  <div className="font-mono text-[10px] text-muted-dark dark:text-slate-300 truncate">
-                    {m.sid.slice(0, 16)}…
+                  <div className="text-[10px] text-muted-dark dark:text-slate-300 truncate">
+                    Sent securely to device
                   </div>
                   <span className={`badge text-[10px] w-fit ${TYPE_STYLE[m.type] ?? 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
                     {TYPE_LABEL[m.type] ?? m.type}
                   </span>
                   <span className={`badge text-[10px] w-fit ${DELIVERY_STYLE[m.status]}`}>
-                    {m.status}
+                    {DELIVERY_LABEL[m.status]}
                   </span>
                   <div className="text-[11px] text-muted-light dark:text-slate-400">
                     {fmtTs(m.createdAt)}
@@ -298,8 +305,8 @@ export default function TwilioGateway() {
                   </div>
                 </div>
 
-                <div className="sm:hidden text-[11px] text-muted-light dark:text-slate-400 font-mono truncate">
-                  {m.sid.slice(0, 20)}…
+                <div className="sm:hidden text-[11px] text-muted-light dark:text-slate-400 truncate">
+                  Sent securely to device
                 </div>
               </div>
             ))}
@@ -330,7 +337,7 @@ function PipelineTrack({ state }: { state: FireState }) {
         </div>
       ))}
       <span className="text-[10px] font-bold text-brand ml-1 whitespace-nowrap">
-        {state === 'queuing' ? 'queued' : state === 'sending' ? 'sending' : 'delivered ✓'}
+        {state === 'queuing' ? 'Preparing' : state === 'sending' ? 'Sending' : 'Delivered ✓'}
       </span>
     </div>
   );

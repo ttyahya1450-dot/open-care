@@ -140,14 +140,14 @@ export default function NDISClaimsProcessor() {
         <div>
           <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
             <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">
-              NDIS Claims Processor
+              NDIS Claim Export
             </h2>
             <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700">
               PRODA / PACE
             </span>
           </div>
           <p className="text-sm text-muted-light dark:text-slate-400 m-0">
-            Bulk-validated claim export formatted to the current NDIS government upload schema.
+            Download a ready-to-upload claim file for all completed shifts, formatted for the NDIS portal.
           </p>
         </div>
 
@@ -172,7 +172,7 @@ export default function NDISClaimsProcessor() {
           ) : downloadState === 'ready' ? (
             '✓ Downloaded!'
           ) : (
-            '⬇ Download PRODA/PACE CSV'
+            '⬇ Download Claim File'
           )}
         </button>
       </div>
@@ -184,7 +184,7 @@ export default function NDISClaimsProcessor() {
             {validShifts.length}
           </div>
           <div className="text-[11px] font-bold text-green-600 dark:text-green-500 uppercase tracking-wider mt-0.5">
-            Valid Claims
+            Ready to Claim
           </div>
         </div>
         <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-[16px] p-4 text-center">
@@ -211,7 +211,7 @@ export default function NDISClaimsProcessor() {
           <div className="text-[28px] mb-2">📋</div>
           <div className="font-bold text-navy dark:text-slate-100 mb-1">No shift records yet</div>
           <div className="text-sm text-muted-light dark:text-slate-400">
-            Completed and verified shifts will appear here, ready for PRODA/PACE export.
+            Completed and verified shifts will appear here, ready to download and submit to the NDIS portal.
           </div>
         </div>
       )}
@@ -220,7 +220,7 @@ export default function NDISClaimsProcessor() {
       {validShifts.length > 0 && (
         <div className="mb-5">
           <h3 className="text-[12px] font-extrabold text-muted-light dark:text-slate-400 uppercase tracking-[0.1em] mb-3">
-            Valid Claims ({validShifts.length})
+            Ready to Claim ({validShifts.length})
           </h3>
 
           <div className="grid gap-2">
@@ -332,9 +332,8 @@ export default function NDISClaimsProcessor() {
 
       {/* Schema note */}
       <p className="text-[11px] text-muted-lighter dark:text-slate-500 mt-4 text-center m-0">
-        CSV formatted to NDIS PRODA/PACE bulk claims schema (2025) ·
-        ABSDivisionCode Q (Healthcare &amp; Social Assistance) ·
-        All data remains local — no NDIA network calls
+        Claim file is formatted for the NDIS portal (PRODA/PACE 2025) ·
+        All data stays on your device — nothing is sent automatically
       </p>
     </div>
   );

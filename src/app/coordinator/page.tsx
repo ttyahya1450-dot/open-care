@@ -425,19 +425,19 @@ export default function CoordinatorPage() {
             </div>
           </div>
 
-          {/* ── Verified Shift Ledger ─────────────────────────────────────── */}
+          {/* ── Completed Shifts ─────────────────────────────────────────── */}
           <div id="verified-shift-ledger" className="card-lg">
             <div className="flex justify-between items-start flex-wrap gap-3 mb-5">
               <div>
                 <div className="flex items-center gap-2.5 mb-1.5">
-                  <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">Verified Shift Ledger</h2>
+                  <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">Completed Shifts</h2>
                   <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-100 border border-green-200">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                     <span className="text-[11px] font-bold text-green-700 uppercase tracking-wider">Live</span>
                   </span>
                 </div>
                 <p className="text-muted-light dark:text-slate-400 text-sm m-0">
-                  Cross-verified clock-in / clock-out records with GPS location confirmation for each shift.
+                  A record of all shifts — who worked, when, and where. Active shifts update in real time.
                 </p>
               </div>
 
@@ -619,7 +619,7 @@ export default function CoordinatorPage() {
           {/* Legal Compliance Verification */}
           <LegalCompliancePanel />
 
-          {/* Stripe Connect Ledger — APP 11 PII-obfuscated transaction splits */}
+          {/* Booking Payments */}
           <StripeLedger />
 
           {/* NDIS Claims Processor — PRODA/PACE CSV export */}

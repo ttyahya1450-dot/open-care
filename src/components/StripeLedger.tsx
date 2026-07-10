@@ -58,14 +58,14 @@ export default function StripeLedger() {
         <div>
           <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
             <h2 className="text-[20px] font-bold text-navy dark:text-white m-0">
-              Stripe Connect Ledger
+              Booking Payments
             </h2>
             <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700">
               APP 11 Protected
             </span>
           </div>
           <p className="text-sm text-muted-light dark:text-slate-400 m-0">
-            Marketplace transaction splits — 87.5% to providers, 12.5% to OpenCare platform
+            A clear breakdown of every booking payment — your care worker&apos;s share and the OpenCare service fee.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function StripeLedger() {
               : 'bg-gradient-to-br from-navy to-navy-light text-white shadow-md hover:opacity-90'
           }`}
         >
-          {settling ? 'Settling…' : '⚡ Simulate Settle All Pending'}
+          {settling ? 'Updating…' : '⚡ Mark All Pending as Settled'}
         </button>
       </div>
 
@@ -87,13 +87,13 @@ export default function StripeLedger() {
         style={{ background: 'linear-gradient(135deg,#162033 0%,#1e3a5f 100%)' }}
       >
         <div className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-blue-300 mb-1.5">
-          Platform Running Balance
+          Platform Earnings
         </div>
         <div className="text-[36px] font-extrabold tracking-tight mb-1">
           ${fmt(store.platformRunningBalance)}
         </div>
         <div className="text-[12px] text-blue-200">
-          12.5% of all settled transactions · OpenCare account
+          Total service fees collected from all settled bookings
         </div>
         <div className="mt-4 grid grid-cols-3 gap-3">
           {[
@@ -218,8 +218,8 @@ export default function StripeLedger() {
 
       {/* Footer note */}
       <p className="text-[11px] text-muted-lighter dark:text-slate-500 mt-4 text-center m-0">
-        Stripe transfer IDs and charge IDs simulated locally · No real payments processed ·{' '}
-        PII obfuscated per Australian Privacy Principle 11
+        Payment records are shown for illustration only — no real money is transferred ·
+        Personal details are protected under Australian Privacy Principle 11
       </p>
     </div>
   );

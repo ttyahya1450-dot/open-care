@@ -185,9 +185,9 @@ export default function LegalCompliancePanel() {
                   <div className="grid gap-2 text-[12px]" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
                     {[
                       { label: 'Signature name',   value: row.consent.signatureName },
-                      { label: 'Timestamp (UTC)',  value: row.consent.timestamp },
-                      { label: 'Session ID',       value: row.consent.sessionId },
-                      { label: 'Simulated IP',     value: row.consent.simulatedIp },
+                      { label: 'Signed at',        value: row.consent.timestamp },
+                      { label: 'Record ID',        value: row.consent.sessionId },
+                      { label: 'Session Reference',value: row.consent.simulatedIp },
                       { label: 'Terms version',    value: `v${row.consent.termsVersion}` },
                     ].map(({ label, value }) => (
                       <div key={label}>
@@ -198,8 +198,8 @@ export default function LegalCompliancePanel() {
                   </div>
                   <div className="mt-3 grid gap-1.5">
                     {[
-                      { key: 'agreedToIntermediaryWaiver',  label: 'Intermediary Liability Waiver (§1)' },
-                      { key: 'agreedToAntiCircumvention',   label: 'Anti-Circumvention Clause (§2)'    },
+                      { key: 'agreedToIntermediaryWaiver',  label: 'Platform Liability Terms (§1)'     },
+                      { key: 'agreedToAntiCircumvention',   label: 'Direct Booking Policy (§2)'        },
                       { key: 'agreedToCancellationPolicy',  label: '24-Hour Cancellation Policy (§3)'  },
                       { key: 'agreedToMasterTerms',         label: 'Master Terms of Service'           },
                     ].map(({ key, label }) => {
@@ -235,7 +235,7 @@ export default function LegalCompliancePanel() {
       <div className="mt-5 pt-4 border-t border-surface-border dark:border-slate-700 flex items-start gap-2.5 text-[11px] text-muted-light dark:text-slate-400">
         <span className="text-[14px] shrink-0 mt-0.5">🔒</span>
         <span>
-          All consent records are stored in the user&apos;s local device profile with a cryptographic session identifier and timestamped IP address. These records constitute legally admissible electronic signatures under the <em>Electronic Transactions Act 1999 (Cth)</em>.
+          All signed agreements are saved securely on the user&apos;s device with a timestamped session reference. These records are legally valid electronic signatures under the <em>Electronic Transactions Act 1999 (Cth)</em>.
         </span>
       </div>
     </div>
