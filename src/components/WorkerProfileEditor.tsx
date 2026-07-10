@@ -191,48 +191,37 @@ export default function WorkerProfileEditor({ workerId }: Props) {
             <div className="font-semibold text-sm text-navy dark:text-slate-200 mb-3">
               Roster availability <span className="text-muted-lighter dark:text-slate-500 font-normal">— tap cells to toggle</span>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse" style={{ minWidth: '420px' }}>
-                <thead>
-                  <tr>
-                    <th className="w-[70px]" />
-                    {DAYS_SHORT.map((d) => (
-                      <th key={d} className="text-center text-[11px] font-bold text-muted-lighter dark:text-slate-500 pb-2 uppercase tracking-wider">
-                        {d}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {SLOT_LABELS.map((slotLabel, si) => (
-                    <tr key={si}>
-                      <td className="pr-2 py-1">
-                        <div className="text-[10px] text-muted-lighter dark:text-slate-500 font-semibold whitespace-pre leading-tight">
-                          {slotLabel}
-                        </div>
-                      </td>
-                      {DAYS_SHORT.map((_, di) => {
-                        const on = avail[di]?.[si] ?? false;
-                        return (
-                          <td key={di} className="p-1 text-center">
-                            <button
-                              onClick={() => toggleSlot(di, si)}
-                              aria-pressed={on}
-                              className={`w-full h-[32px] rounded-[8px] border cursor-pointer transition-all text-[11px] font-bold ${
-                                on
-                                  ? 'bg-brand-gradient text-white border-transparent shadow-brand-sm'
-                                  : 'bg-surface-muted dark:bg-slate-700 text-muted-lighter dark:text-slate-500 border-surface-border dark:border-slate-600 hover:border-brand/30'
-                              }`}
-                            >
-                              {on ? '✓' : '–'}
-                            </button>
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid w-full gap-[3px]" style={{ gridTemplateColumns: '36px repeat(7, 1fr)' }}>
+              {/* Day headers */}
+              <div />
+              {DAYS_SHORT.map((d) => (
+                <div key={d} className="text-center text-[10px] font-bold text-muted-lighter dark:text-slate-500 pb-1.5 uppercase">
+                  {d}
+                </div>
+              ))}
+              {/* Slot rows */}
+              {(['AM', 'PM', 'Eve'] as const).flatMap((abbr, si) => [
+                <div key={`lbl-${si}`} className="flex items-center">
+                  <span className="text-[9px] text-muted-lighter dark:text-slate-500 font-bold">{abbr}</span>
+                </div>,
+                ...DAYS_SHORT.map((_, di) => {
+                  const on = avail[di]?.[si] ?? false;
+                  return (
+                    <button
+                      key={`${si}-${di}`}
+                      onClick={() => toggleSlot(di, si)}
+                      aria-pressed={on}
+                      className={`h-[30px] rounded-[6px] border cursor-pointer transition-all text-[10px] font-bold ${
+                        on
+                          ? 'bg-brand-gradient text-white border-transparent shadow-brand-sm'
+                          : 'bg-surface-muted dark:bg-slate-700 text-muted-lighter dark:text-slate-500 border-surface-border dark:border-slate-600 hover:border-brand/30'
+                      }`}
+                    >
+                      {on ? '✓' : '–'}
+                    </button>
+                  );
+                }),
+              ])}
             </div>
           </div>
 

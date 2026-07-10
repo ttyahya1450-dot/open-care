@@ -51,8 +51,8 @@
   }
 
   /* ── Cards ───────────────────────────────────────────────────────────── */
-  .card    { @apply bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-card dark:shadow-none border border-surface-border dark:border-slate-700 transition-colors duration-200; }
-  .card-lg { @apply bg-white dark:bg-slate-800 rounded-[18px] sm:rounded-[24px] p-4 sm:p-[26px] shadow-card-lg dark:shadow-none border border-surface-border dark:border-slate-700 transition-colors duration-200; }
+  .card    { @apply bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-card dark:shadow-none border border-surface-border dark:border-slate-700 transition-colors duration-200 overflow-hidden; }
+  .card-lg { @apply bg-white dark:bg-slate-800 rounded-[18px] sm:rounded-[24px] p-4 sm:p-[26px] shadow-card-lg dark:shadow-none border border-surface-border dark:border-slate-700 transition-colors duration-200 overflow-hidden; }
 
   /* ── Buttons — 48 px minimum tap target (iOS/Android HIG) ─────────── */
   .btn-primary   { @apply inline-flex items-center justify-center min-h-[48px] px-5 py-3 rounded-xl bg-brand-gradient text-white font-bold text-sm shadow-brand cursor-pointer border-none transition-opacity hover:opacity-90 active:scale-[0.97]; }
