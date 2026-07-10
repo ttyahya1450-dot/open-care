@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useDataStore } from '../context/DataStoreContext';
 import type { DSShiftLog } from '../lib/dataStore';
 
@@ -129,25 +129,6 @@ export default function AuditPrintView({ participantId }: Props) {
   const [showPreview, setShowPreview] = useState(false);
   const [printState, setPrintState] = useState<'idle' | 'generating'>('idle');
 
-  const previewRef    = useRef<HTMLDivElement>(null);
-  const contentRef    = useRef<HTMLDivElement>(null);
-  const [previewScale,  setPreviewScale]  = useState(1);
-  const [contentHeight, setContentHeight] = useState(500);
-
-  useEffect(() => {
-    if (!showPreview) return;
-    const update = () => {
-      if (!previewRef.current || !contentRef.current) return;
-      const s = Math.min(1, previewRef.current.clientWidth / 812);
-      setPreviewScale(s);
-      setContentHeight(contentRef.current.scrollHeight);
-    };
-    const t = setTimeout(update, 0);
-    const ro = new ResizeObserver(update);
-    if (previewRef.current) ro.observe(previewRef.current);
-    return () => { clearTimeout(t); ro.disconnect(); };
-  }, [showPreview]);
-
   const logs = participantId
     ? store.shiftLogs.filter((l) => l.participantId === participantId)
     : store.shiftLogs;
@@ -220,20 +201,8 @@ export default function AuditPrintView({ participantId }: Props) {
               🖨 Print / Save PDF
             </button>
           </div>
-          <div
-            ref={previewRef}
-            className="w-full overflow-hidden"
-            style={{ height: `${Math.max(300, contentHeight * previewScale + 32)}px` }}
-          >
-            <div
-              ref={contentRef}
-              style={{
-                transform: `scale(${previewScale})`,
-                transformOrigin: 'top left',
-                width: '812px',
-                padding: '16px',
-              }}
-            >
+          <div className="w-full overflow-hidden flex justify-center items-start h-[420px]">
+            <div className="scale-[0.45] sm:scale-100 origin-top shrink-0">
               <PrintableReport logs={logs} />
             </div>
           </div>
