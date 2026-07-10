@@ -209,10 +209,10 @@ export default function WorkersPage() {
         </div>
 
         {/* Hero: video + stats */}
-        <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+        <div className="grid gap-6 md:grid-cols-2">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="font-bold text-sm text-muted-darker">30-second video introduction</span>
+              <span className="font-bold text-sm text-muted-darker dark:text-slate-300">30-second video introduction</span>
               <span className="badge badge-brand">Meet &amp; Greet</span>
             </div>
             <VideoIntro
@@ -231,7 +231,7 @@ export default function WorkersPage() {
                     ${profile.rate}
                     <span className="text-[14px] font-semibold text-muted-light">/hr</span>
                   </div>
-                  <div className="text-[13px] text-muted-light mt-0.5">{profile.suburb}</div>
+                  <div className="text-[13px] text-muted-light dark:text-slate-400 mt-0.5">{profile.suburb}</div>
                 </div>
                 {profile.verified && (
                   <span className="px-3.5 py-1.5 rounded-full font-bold text-[13px] bg-green-50 text-green-700 border border-green-200">
@@ -247,7 +247,7 @@ export default function WorkersPage() {
                 ].map(({ value, label }) => (
                   <div key={label} className="bg-surface rounded-xl p-3 text-center border border-surface-border">
                     <div className="text-[18px] font-extrabold tracking-tight text-navy dark:text-white">{value}</div>
-                    <div className="text-[11px] text-muted-light font-semibold">{label}</div>
+                    <div className="text-[11px] text-muted-light dark:text-slate-400 font-semibold">{label}</div>
                   </div>
                 ))}
               </div>
@@ -331,7 +331,7 @@ export default function WorkersPage() {
             if (badges.length === 0) return null;
             return (
               <div key={cat} className="mb-3.5">
-                <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-muted-lighter mb-2">
+                <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-muted-lighter dark:text-slate-500 mb-2">
                   {CAT_LABELS[cat]}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -402,16 +402,16 @@ export default function WorkersPage() {
                         className="w-full text-left p-4 cursor-pointer bg-transparent border-none font-sans hover:bg-surface-muted/50 transition-colors"
                       >
                         <div className="flex justify-between items-start flex-wrap gap-3">
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3 min-w-0">
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center text-white font-extrabold text-[13px] shrink-0">
                               {req.profile.initials}
                             </div>
-                            <div>
-                              <div className="font-bold text-[15px] text-navy dark:text-slate-100">{req.participant}</div>
-                              <div className="text-[12px] text-muted-light mt-0.5">
+                            <div className="min-w-0">
+                              <div className="font-bold text-[15px] text-navy dark:text-slate-100 truncate">{req.participant}</div>
+                              <div className="text-[12px] text-muted-light dark:text-slate-400 mt-0.5">
                                 {req.serviceType} · {req.date} · {req.timeStart} · {req.duration}h
                               </div>
-                              <div className="text-[11px] text-muted-lighter mt-0.5">📍 {req.suburb}</div>
+                              <div className="text-[11px] text-muted-lighter dark:text-slate-500 mt-0.5">📍 {req.suburb}</div>
                             </div>
                           </div>
 
@@ -498,22 +498,22 @@ export default function WorkersPage() {
             </div>
 
             {/* Instant Invoice Payouts */}
-            <div id="instant-payout" className="bg-dark-payout rounded-[24px] p-[26px] text-white shadow-dark-card">
-              <div className="flex justify-between items-start mb-5 flex-wrap gap-3">
+            <div id="instant-payout" className="bg-dark-payout rounded-[24px] p-5 sm:p-[26px] text-white shadow-dark-card">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-5 gap-3">
                 <div>
                   <h2 className="text-[20px] font-bold m-0">⚡ Instant Invoice Payouts</h2>
                   <p className="text-white/65 text-sm mt-1.5 max-w-[420px] leading-relaxed">
                     Cash out 80% of confirmed earnings instantly after a verified clock-out. The remaining 20% clears after coordinator sign-off.
                   </p>
                 </div>
-                <div className="bg-white/10 rounded-2xl px-5 py-3.5 text-right backdrop-blur-sm shrink-0">
+                <div className="bg-white/10 rounded-2xl px-5 py-3.5 text-right backdrop-blur-sm w-full sm:w-auto sm:shrink-0">
                   <div className="text-[11px] uppercase tracking-[0.1em] opacity-60 mb-1 font-semibold">Available now</div>
                   <div className="text-[28px] font-extrabold tracking-tight">${availableBalance.toFixed(2)}</div>
                 </div>
               </div>
 
               <div className="bg-white/8 rounded-[18px] p-4 mb-4 border border-white/10">
-                <div className="flex justify-between items-center flex-wrap gap-3.5">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3.5">
                   <div>
                     <div className="font-bold text-[15px] mb-1">Pending · Alex Morgan · 28 Jun · 3h</div>
                     <div className="text-white/60 text-[13px]">
@@ -524,7 +524,7 @@ export default function WorkersPage() {
                   <button
                     onClick={handleCashOut}
                     disabled={payoutState !== 'idle'}
-                    className={`px-6 py-3 rounded-xl border-none font-extrabold text-sm text-white cursor-pointer transition-all whitespace-nowrap ${
+                    className={`w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl border-none font-extrabold text-sm text-white cursor-pointer transition-all ${
                       payoutState === 'done'
                         ? 'bg-green-500 cursor-default'
                         : payoutState === 'processing'
