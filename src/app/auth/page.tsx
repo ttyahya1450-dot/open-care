@@ -241,7 +241,7 @@ export default function AuthPage() {
             <div className="bg-white rounded-[28px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.45)] border-2 border-rose-400">
               <div className="bg-rose-600 px-6 py-3 flex items-center gap-2.5">
                 <span className="text-white font-extrabold text-[12px] uppercase tracking-wider">OpenCare Security</span>
-                <span className="ml-auto text-rose-200 text-[11px] font-mono">BRUTE-FORCE PROTECTION</span>
+                <span className="ml-auto text-rose-200 text-[11px] font-mono">ACCOUNT SECURITY</span>
               </div>
               <div className="px-7 py-8 text-center">
                 <div className="text-[52px] mb-4">🔒</div>
@@ -307,7 +307,7 @@ export default function AuthPage() {
                 {mode === 'signup' && (
                   <div className="mb-6">
                     <p className="text-[11px] font-bold uppercase tracking-[0.07em] text-muted-darker mb-2.5">I am a…</p>
-                    <div className="grid gap-2.5" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))' }}>
+                    <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-3">
                       {ROLES.map((r) => {
                         const sel = selectedRole === r.role;
                         return (
@@ -432,7 +432,7 @@ export default function AuthPage() {
                     loading ? 'bg-brand-muted cursor-not-allowed' : 'bg-brand-full shadow-brand hover:opacity-95'
                   }`}
                 >
-                  {loading ? 'Verifying credentials…' : mode === 'signin' ? 'Sign In →' : `Create ${selectedMeta.label} Account →`}
+                  {loading ? 'Signing you in…' : mode === 'signin' ? 'Sign In →' : `Create ${selectedMeta.label} Account →`}
                 </button>
 
                 {mode === 'signup' && (
@@ -454,7 +454,7 @@ export default function AuthPage() {
               <div className="flex-1 h-px bg-white/15" />
             </div>
 
-            <div className="grid gap-2.5" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))' }}>
+            <div className="grid gap-2.5 grid-cols-3">
               {DEMO_CONFIG.map(({ role, icon, name: demoName, subtitle, highlightClass, borderClass }) => {
                 const isLoading = demoLoading === role;
                 return (
@@ -494,7 +494,7 @@ export default function AuthPage() {
           {/* 2SV notice */}
           <div className="mt-4 flex items-center justify-center gap-2 text-white/35 text-[11px]">
             <span>🔐</span>
-            <span>Protected by 2-step verification · Brute-force lockout active</span>
+            <span>Protected by 2-step verification · Auto-lock after too many failed attempts</span>
           </div>
 
           {/* Guest link */}
