@@ -2,28 +2,49 @@
 
 import { useEffect, useState } from 'react';
 
+type StorageType    = 'localStorage' | 'sessionStorage';
+type Classification = 'pii-sensitive' | 'operational' | 'session';
+
 interface CatalogueEntry {
-  key:         string;
-  label:       string;
-  storageType: 'localStorage' | 'sessionStorage';
-  present:     boolean;
-  byteSize:    number;
-  recordCount: number | null;
-  jurisdiction: 'AU';
+  key:            string;
+  label:          string;
+  storageType:    StorageType;
+  classification: Classification;
+  present:        boolean;
+  byteSize:       number;
+  recordCount:    number | null;
+  jurisdiction:   'AU';
 }
 
-const CATALOGUE_SPEC = [
-  { key: 'opencare_data_v1',           label: 'Main DataStore',         storageType: 'localStorage'   },
-  { key: 'opencare_legal_v1',          label: 'Legal Consent Records',  storageType: 'localStorage'   },
-  { key: 'opencare_ratelimit_v1',      label: 'Rate Limit Engine',      storageType: 'localStorage'   },
-  { key: 'opencare_security_audit_v1', label: 'Security Audit Log',     storageType: 'localStorage'   },
-  { key: 'opencare_auth_v1',           label: 'Auth Session',           storageType: 'localStorage'   },
-  { key: 'opencare_stripe_v1',         label: 'Stripe Connect Ledger',  storageType: 'localStorage'   },
-  { key: 'opencare_twilio_v1',         label: 'Twilio Gateway Log',     storageType: 'localStorage'   },
-  { key: 'opencare_geofence_v1',       label: 'Geofence Audit Trail',   storageType: 'localStorage'   },
-  { key: 'opencare_otp_v1',            label: 'Active OTP Session',     storageType: 'sessionStorage' },
-  { key: 'opencare_sms_shown',         label: 'SMS Banner Guard',       storageType: 'sessionStorage' },
-] as const;
+const CLASS_BADGE: Record<Classification, { label: string; cls: string }> = {
+  'pii-sensitive': {
+    label: 'PII',
+    cls:   'bg-rose-100 text-rose-700 border-rose-200 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-700',
+  },
+  'operational': {
+    label: 'Ops',
+    cls:   'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700',
+  },
+  'session': {
+    label: 'Sess',
+    cls:   'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700',
+  },
+};
+
+const CATALOGUE_SPEC: Array<{
+  key: string; label: string; storageType: StorageType; classification: Classification;
+}> = [
+  { key: 'opencare_data_v1',           label: 'Main DataStore',         storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_legal_v1',          label: 'Legal Consent Records',  storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_ratelimit_v1',      label: 'Rate Limit Engine',      storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_security_audit_v1', label: 'Security Audit Log',     storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_auth_v1',           label: 'Auth Session',           storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_stripe_v1',         label: 'Stripe Connect Ledger',  storageType: 'localStorage',   classification: 'pii-sensitive' },
+  { key: 'opencare_twilio_v1',         label: 'Twilio Gateway Log',     storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_geofence_v1',       label: 'Geofence Audit Trail',   storageType: 'localStorage',   classification: 'operational'   },
+  { key: 'opencare_otp_v1',            label: 'Active OTP Session',     storageType: 'sessionStorage', classification: 'session'       },
+  { key: 'opencare_sms_shown',         label: 'SMS Banner Guard',       storageType: 'sessionStorage', classification: 'session'       },
+];
 
 function readEntry(spec: typeof CATALOGUE_SPEC[number]): CatalogueEntry {
   const store = spec.storageType === 'localStorage' ? localStorage : sessionStorage;
@@ -54,8 +75,8 @@ function loadEntries(): CatalogueEntry[] {
 }
 
 function fmtBytes(b: number): string {
-  if (b === 0)       return '0 B';
-  if (b < 1024)      return `${b} B`;
+  if (b === 0)  return '0 B';
+  if (b < 1024) return `${b} B`;
   return `${(b / 1024).toFixed(1)} KB`;
 }
 
@@ -76,6 +97,7 @@ export default function DataResidencyAudit() {
   useEffect(() => { refresh(); }, []);
 
   const presentCount = entries.filter((e) => e.present).length;
+  const piiCount     = entries.filter((e) => e.classification === 'pii-sensitive' && e.present).length;
 
   return (
     <div className="card-lg">
@@ -107,10 +129,10 @@ export default function DataResidencyAudit() {
       </div>
 
       {/* Compliance declaration */}
-      <div className="rounded-[18px] bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 p-5 mb-6">
+      <div className="rounded-[18px] bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 p-5 mb-5">
         <div className="flex items-start gap-3">
           <div className="text-[24px] mt-0.5">🏛️</div>
-          <div>
+          <div className="flex-1">
             <div className="font-bold text-[14px] text-blue-900 dark:text-blue-200 mb-2">
               Australian Health Data Residency Declaration
             </div>
@@ -131,6 +153,13 @@ export default function DataResidencyAudit() {
                 <span className="text-[10px] font-bold text-blue-500">✓</span>
                 <span><strong>NDIS Act 2013</strong> — Participant records not transmitted to third-party APIs</span>
               </div>
+              <div className="flex items-center gap-2 mt-0.5 pt-0.5 border-t border-blue-200 dark:border-blue-700">
+                <span className="text-[10px] font-bold text-amber-500">⚠</span>
+                <span>
+                  <strong>Encryption at rest</strong> — MVP stores device-local plaintext;{' '}
+                  <span className="font-semibold">AES-256-GCM via SubtleCrypto API</span> required before production deployment
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -139,9 +168,9 @@ export default function DataResidencyAudit() {
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-3 mb-5">
         {[
-          { label: 'Keys Present',   val: `${presentCount}/${entries.length}`, color: 'text-green-700 dark:text-green-400' },
-          { label: 'Total Storage',  val: `${totalKB(entries)} KB`,            color: 'text-navy dark:text-white'          },
-          { label: 'External Calls', val: '0',                                  color: 'text-green-700 dark:text-green-400' },
+          { label: 'Keys Present',    val: `${presentCount}/${entries.length}`, color: 'text-green-700 dark:text-green-400' },
+          { label: 'PII Keys Active', val: `${piiCount}`,                        color: 'text-rose-700 dark:text-rose-400'   },
+          { label: 'External Calls',  val: '0',                                  color: 'text-green-700 dark:text-green-400' },
         ].map(({ label, val, color }) => (
           <div key={label} className="bg-surface dark:bg-slate-800 rounded-[14px] p-3.5 text-center border border-surface-border dark:border-slate-700">
             <div className={`text-[22px] font-extrabold tracking-tight ${color}`}>{val}</div>
@@ -150,15 +179,27 @@ export default function DataResidencyAudit() {
         ))}
       </div>
 
+      {/* Classification legend */}
+      <div className="flex flex-wrap gap-2.5 mb-4">
+        {(Object.entries(CLASS_BADGE) as [Classification, { label: string; cls: string }][]).map(([, { label, cls }]) => (
+          <span key={label} className={`px-2.5 py-1 rounded-full text-[11px] font-bold border ${cls}`}>
+            {label === 'PII'  ? '🔒 PII Sensitive'   :
+             label === 'Ops'  ? '⚙ Operational'      :
+                                '⏱ Session-Only'}
+          </span>
+        ))}
+        <span className="text-[11px] text-muted-lighter dark:text-slate-500 self-center">— data classification per key</span>
+      </div>
+
       {/* Storage catalogue table */}
       <div className="grid gap-2">
         {/* Desktop header */}
         <div
           className="hidden md:grid text-[10px] font-extrabold uppercase tracking-[0.08em] text-muted-lighter dark:text-slate-500 px-3"
-          style={{ gridTemplateColumns: '1fr 1fr 100px 70px 70px 60px 60px' }}
+          style={{ gridTemplateColumns: '1fr 1fr 80px 70px 70px 60px 60px' }}
         >
           <div>Key</div>
-          <div>Label</div>
+          <div>Label / Class</div>
           <div>Storage</div>
           <div className="text-right">Bytes</div>
           <div className="text-right">Records</div>
@@ -166,88 +207,98 @@ export default function DataResidencyAudit() {
           <div className="text-center">Status</div>
         </div>
 
-        {entries.map((e) => (
-          <div
-            key={e.key}
-            className={`rounded-[14px] border p-3.5 ${
-              e.present
-                ? 'bg-white dark:bg-slate-900 border-surface-border dark:border-slate-700'
-                : 'bg-surface dark:bg-slate-800 border-surface-border dark:border-slate-700 opacity-60'
-            }`}
-          >
-            {/* Mobile */}
-            <div className="md:hidden">
-              <div className="flex justify-between items-start mb-1.5">
-                <div>
-                  <div className="font-mono text-[11px] text-muted-dark dark:text-slate-300">{e.key}</div>
-                  <div className="font-semibold text-[12px] text-navy dark:text-white mt-0.5">{e.label}</div>
+        {entries.map((e) => {
+          const cb = CLASS_BADGE[e.classification];
+          return (
+            <div
+              key={e.key}
+              className={`rounded-[14px] border p-3.5 ${
+                e.present
+                  ? 'bg-white dark:bg-slate-900 border-surface-border dark:border-slate-700'
+                  : 'bg-surface dark:bg-slate-800 border-surface-border dark:border-slate-700 opacity-60'
+              }`}
+            >
+              {/* Mobile */}
+              <div className="md:hidden">
+                <div className="flex justify-between items-start mb-1.5">
+                  <div>
+                    <div className="font-mono text-[11px] text-muted-dark dark:text-slate-300">{e.key}</div>
+                    <div className="font-semibold text-[12px] text-navy dark:text-white mt-0.5">{e.label}</div>
+                  </div>
+                  <div className="flex gap-1.5 flex-wrap justify-end">
+                    <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${cb.cls}`}>{cb.label}</span>
+                    <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-green-100 text-green-700 border border-green-200">AU</span>
+                    <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
+                      e.present
+                        ? 'bg-green-100 text-green-700 border-green-200'
+                        : 'bg-slate-100 text-slate-500 border-slate-200'
+                    }`}>
+                      {e.present ? 'Active' : 'Empty'}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex gap-1.5 flex-wrap justify-end">
-                  <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-green-100 text-green-700 border border-green-200">AU</span>
+                <div className="flex gap-3 text-[11px] text-muted-light dark:text-slate-400">
                   <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
+                    e.storageType === 'sessionStorage'
+                      ? 'bg-orange-100 text-orange-700 border-orange-200'
+                      : 'bg-purple-100 text-purple-700 border-purple-200'
+                  }`}>
+                    {e.storageType === 'sessionStorage' ? 'Session' : 'Local'}
+                  </span>
+                  <span>{e.present ? fmtBytes(e.byteSize) : '—'}</span>
+                  {e.recordCount !== null && <span>{e.recordCount} records</span>}
+                </div>
+              </div>
+
+              {/* Desktop */}
+              <div
+                className="hidden md:grid items-center gap-3"
+                style={{ gridTemplateColumns: '1fr 1fr 80px 70px 70px 60px 60px' }}
+              >
+                <div className="font-mono text-[11px] text-muted-dark dark:text-slate-300 truncate">{e.key}</div>
+                <div>
+                  <div className="text-[12px] font-semibold text-navy dark:text-white">{e.label}</div>
+                  <span className={`mt-0.5 inline-block px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${cb.cls}`}>
+                    {cb.label === 'PII' ? '🔒 PII' : cb.label === 'Ops' ? '⚙ Ops' : '⏱ Sess'}
+                  </span>
+                </div>
+                <div>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                    e.storageType === 'sessionStorage'
+                      ? 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700'
+                      : 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700'
+                  }`}>
+                    {e.storageType === 'sessionStorage' ? 'session' : 'local'}
+                  </span>
+                </div>
+                <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">{e.present ? fmtBytes(e.byteSize) : '—'}</div>
+                <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">
+                  {e.recordCount !== null ? e.recordCount : '—'}
+                </div>
+                <div className="flex justify-center">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700">
+                    AU
+                  </span>
+                </div>
+                <div className="flex justify-center">
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
                     e.present
-                      ? 'bg-green-100 text-green-700 border-green-200'
-                      : 'bg-slate-100 text-slate-500 border-slate-200'
+                      ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700'
+                      : 'bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-500 dark:border-slate-600'
                   }`}>
                     {e.present ? 'Active' : 'Empty'}
                   </span>
                 </div>
               </div>
-              <div className="flex gap-3 text-[11px] text-muted-light dark:text-slate-400">
-                <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
-                  e.storageType === 'sessionStorage'
-                    ? 'bg-orange-100 text-orange-700 border-orange-200'
-                    : 'bg-purple-100 text-purple-700 border-purple-200'
-                }`}>
-                  {e.storageType === 'sessionStorage' ? 'Session' : 'Local'}
-                </span>
-                <span>{e.present ? fmtBytes(e.byteSize) : '—'}</span>
-                {e.recordCount !== null && <span>{e.recordCount} records</span>}
-              </div>
             </div>
-
-            {/* Desktop */}
-            <div
-              className="hidden md:grid items-center gap-3"
-              style={{ gridTemplateColumns: '1fr 1fr 100px 70px 70px 60px 60px' }}
-            >
-              <div className="font-mono text-[11px] text-muted-dark dark:text-slate-300 truncate">{e.key}</div>
-              <div className="text-[12px] font-semibold text-navy dark:text-white">{e.label}</div>
-              <div>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                  e.storageType === 'sessionStorage'
-                    ? 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700'
-                    : 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700'
-                }`}>
-                  {e.storageType === 'sessionStorage' ? 'session' : 'local'}
-                </span>
-              </div>
-              <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">{e.present ? fmtBytes(e.byteSize) : '—'}</div>
-              <div className="text-right text-[12px] text-muted-dark dark:text-slate-300">
-                {e.recordCount !== null ? e.recordCount : '—'}
-              </div>
-              <div className="flex justify-center">
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700">
-                  AU
-                </span>
-              </div>
-              <div className="flex justify-center">
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                  e.present
-                    ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700'
-                    : 'bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-500 dark:border-slate-600'
-                }`}>
-                  {e.present ? 'Active' : 'Empty'}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <p className="text-[11px] text-muted-lighter dark:text-slate-500 mt-4 text-center m-0">
         All storage operations are read-only after page load for this audit view ·
-        No network egress detected · Compliant with Australian Health Data Residency directives
+        No network egress detected · Compliant with Australian Health Data Residency directives ·
+        AES-256-GCM encryption pending for production
       </p>
     </div>
   );

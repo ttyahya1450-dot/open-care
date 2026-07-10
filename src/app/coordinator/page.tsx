@@ -381,7 +381,7 @@ export default function CoordinatorPage() {
               <h2 className="text-[21px] font-bold text-navy mb-3">Burn-rate insight</h2>
               <p className="text-muted text-sm leading-relaxed mb-4 m-0">
                 Current recurring care for <strong className="text-navy"><MaskedText value={selected.name} /></strong> is tracking at{' '}
-                <strong className="text-navy">${detail.burnRate.toFixed(0)}/week</strong>.
+                <strong className="text-navy"><MaskedText value={`$${detail.burnRate.toFixed(0)}`} type="currency" />/week</strong>.
               </p>
 
               <div
@@ -409,15 +409,15 @@ export default function CoordinatorPage() {
 
               <div className="bg-surface rounded-2xl p-4 grid gap-2.5 border border-surface-border">
                 {[
-                  { label: 'Projected runout',             value: detail.projectedRunout ? 'Before plan end' : 'Within plan period', good: !detail.projectedRunout },
-                  { label: 'Avg weekly spend',             value: `$${detail.burnRate.toFixed(0)}`, good: null },
-                  { label: 'Plan weeks remaining',         value: `${selected.weeksRemaining} wks`, good: null },
-                  { label: 'Funded weeks at current rate', value: `${detail.projectedWeeks} wks`, good: detail.projectedWeeks >= selected.weeksRemaining },
-                ].map(({ label, value, good }) => (
+                  { label: 'Projected runout',             value: detail.projectedRunout ? 'Before plan end' : 'Within plan period', good: !detail.projectedRunout, isCurrency: false },
+                  { label: 'Avg weekly spend',             value: `$${detail.burnRate.toFixed(0)}`,                                  good: null,                     isCurrency: true  },
+                  { label: 'Plan weeks remaining',         value: `${selected.weeksRemaining} wks`,                                   good: null,                     isCurrency: false },
+                  { label: 'Funded weeks at current rate', value: `${detail.projectedWeeks} wks`,                                     good: detail.projectedWeeks >= selected.weeksRemaining, isCurrency: false },
+                ].map(({ label, value, good, isCurrency }) => (
                   <div key={label} className="flex justify-between text-[13px]">
                     <span className="font-semibold text-muted-dark">{label}</span>
                     <span className={`font-bold ${good === null ? 'text-navy' : good ? 'text-green-700' : 'text-rose-700'}`}>
-                      {value}
+                      {isCurrency ? <MaskedText value={value} type="currency" /> : value}
                     </span>
                   </div>
                 ))}
@@ -555,7 +555,7 @@ export default function CoordinatorPage() {
                           <div className="font-mono text-[13px] font-bold text-muted-dark">{entry.clockOut}</div>
                           {entry.durationHrs !== null && entry.durationHrs > 0 && (
                             <div className="text-[11px] text-muted-lighter mt-0.5">
-                              {entry.durationHrs}h · ${(entry.durationHrs * entry.hourlyRate * 1.05).toFixed(2)} billed
+                              {entry.durationHrs}h · <MaskedText value={`$${(entry.durationHrs * entry.hourlyRate * 1.05).toFixed(2)}`} type="currency" /> billed
                             </div>
                           )}
                         </div>
@@ -630,6 +630,11 @@ export default function CoordinatorPage() {
 
           {/* Data Residency Audit — Australian jurisdiction compliance */}
           <DataResidencyAudit />
+
+          {/* Australian Privacy Principle disclosure */}
+          <p className="text-[11px] text-muted-lighter dark:text-slate-500 text-center leading-relaxed border-t border-surface-border dark:border-slate-700 pt-4 m-0">
+            Automated Verification Active: Shift matching and funding metrics are monitored locally in accordance with Australian Privacy Principle guidelines.
+          </p>
 
         </section>
 

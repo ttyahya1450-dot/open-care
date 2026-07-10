@@ -328,6 +328,11 @@ export default function GeofenceMonitor({ viewOnly = false }: GeofenceMonitorPro
           No check-in history yet — tap <strong className="text-navy dark:text-slate-200">Simulate At Address</strong> above to run your first GPS verification.
         </div>
       )}
+
+      {/* Australian Privacy Principle disclosure */}
+      <p className="mt-5 pt-4 border-t border-surface-border dark:border-slate-700 text-[11px] text-muted-lighter dark:text-slate-500 text-center leading-relaxed m-0">
+        Automated Verification Active: Shift matching and funding metrics are monitored locally in accordance with Australian Privacy Principle guidelines.
+      </p>
     </div>
   );
 }
