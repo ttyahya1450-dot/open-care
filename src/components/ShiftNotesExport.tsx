@@ -17,7 +17,7 @@ const MOOD_META: Record<Mood, { icon: string; label: string; cardBg: string; car
 const SEED_NOTES: ShiftNote[] = [
   { id: 'n1', date: '2026-06-28', worker: 'Maya Chen',     participant: 'Alex Morgan',  mood: 'positive', note: 'Great session — Alex completed morning routine independently and communicated needs clearly.' },
   { id: 'n2', date: '2026-06-27', worker: 'Daniel Brooks', participant: 'Jordan Lee',   mood: 'neutral',  note: "Jordan was quieter than usual today. Completed tasks but didn't engage much in conversation." },
-  { id: 'n3', date: '2026-06-26', worker: 'Aisha Rahman',  participant: 'Riley Nguyen', mood: 'concern',  note: 'Riley showed signs of distress during the afternoon. Coordinator notified. Plan review recommended.' },
+  { id: 'n3', date: '2026-06-26', worker: 'Aisha Rahman',  participant: 'Riley Nguyen', mood: 'concern',  note: 'Riley showed signs of distress during the afternoon. Support Coordinator notified. Plan review recommended.' },
 ];
 
 const PARTICIPANTS = ['Alex Morgan', 'Jordan Lee', 'Riley Nguyen'];

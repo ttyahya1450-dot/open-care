@@ -82,7 +82,7 @@ export default function GeofenceMonitor({ viewOnly = false }: GeofenceMonitorPro
           </h2>
           {viewOnly && (
             <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-600">
-              Coordinator View
+              Support Coordinator View
             </span>
           )}
           <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-700 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700">

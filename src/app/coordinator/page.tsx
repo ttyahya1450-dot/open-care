@@ -220,7 +220,7 @@ export default function CoordinatorPage() {
           <div>
             <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
               <div>
-                <p className="section-label">Coordinator Dashboard</p>
+                <p className="section-label">Support Coordinator Dashboard</p>
                 <h1 className="page-title">NDIS plan budget burn-rate tracking</h1>
               </div>
               {/* PII mask toggle — visible to coordinator only */}
@@ -250,7 +250,7 @@ export default function CoordinatorPage() {
                 </h2>
                 <p className={`text-sm leading-relaxed max-w-[540px] m-0 ${safeguardState === 'confirmed' ? 'text-green-700 dark:text-green-400' : 'text-rose-700 dark:text-rose-400'}`}>
                   {safeguardState === 'confirmed'
-                    ? `Non-essential bookings are paused for ${atRisk.length} participant${atRisk.length !== 1 ? 's' : ''}. Coordinators and families have been notified.`
+                    ? `Non-essential bookings are paused for ${atRisk.length} participant${atRisk.length !== 1 ? 's' : ''}. Support Coordinators and families have been notified.`
                     : `${atRisk.length} participant${atRisk.length !== 1 ? 's are' : ' is'} at risk of exhausting NDIS plan funds before the plan period ends.`}
                 </p>
               </div>

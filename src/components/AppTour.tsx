@@ -144,7 +144,7 @@ export default function AppTour() {
   const ROLE_LABEL: Record<string, string> = {
     PARTICIPANT: '🙋 Participant',
     WORKER:      '🤝 Support Worker',
-    COORDINATOR: '📋 Coordinator',
+    COORDINATOR: '📋 Support Coordinator',
   };
 
   return (

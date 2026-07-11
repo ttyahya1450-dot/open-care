@@ -31,7 +31,7 @@ const ROLE_INTRO: Record<string, { title: string; subtitle: string; icon: string
   COORDINATOR: {
     icon:     '📋',
     title:    'Service Agreement — Support Coordinator',
-    subtitle: 'Before accessing the coordinator dashboard, please review and accept the platform compliance agreement covering your oversight responsibilities and NDIS obligations.',
+    subtitle: 'Before accessing the support coordinator dashboard, please review and accept the platform compliance agreement covering your oversight responsibilities and NDIS obligations.',
   },
 };
 

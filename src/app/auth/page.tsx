@@ -33,7 +33,7 @@ const ROLES = [
   },
   {
     role: 'COORDINATOR' as UserRole,
-    icon: '📋', label: 'Coordinator', tagline: 'I manage plans',
+    icon: '📋', label: 'Support Coordinator / Case Manager', tagline: 'I manage plans',
     description: 'Oversee multiple participants, track NDIS budget burn-rate, and monitor support delivery.',
     selectedBorder: 'border-purple-400',  selectedBg: 'bg-purple-50',
     selectedText:   'text-purple-700',    selectedSub: 'text-purple-600',
@@ -76,7 +76,7 @@ const DEMO_CONFIG: Array<{
   {
     role: 'COORDINATOR',
     icon: '📋',
-    name: 'Test Coordinator',
+    name: 'Test Support Coordinator',
     subtitle: 'Jordan Brooks · Budget safeguard board',
     highlightClass: 'from-purple-50 to-violet-50 hover:from-purple-100 hover:to-purple-50',
     borderClass: 'border-purple-200 hover:border-purple-400',

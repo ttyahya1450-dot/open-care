@@ -41,7 +41,7 @@ const ROLE_META: Record<UserRole, { label: string; badge: string; ring: string }
     ring:  'ring-2 ring-pink-400/80 ring-offset-1 ring-offset-white dark:ring-offset-slate-800',
   },
   COORDINATOR: {
-    label: 'Coordinator',
+    label: 'Support Coordinator',
     badge: 'bg-purple-50 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
     ring:  'ring-2 ring-purple-400/80 ring-offset-1 ring-offset-white dark:ring-offset-slate-800',
   },
