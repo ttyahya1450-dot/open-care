@@ -4,6 +4,8 @@ const STORE_KEY = 'opencare_data_v1';
 // ── Types ─────────────────────────────────────────────────────────────────
 export type WorkerCategory = 'support' | 'cleaner' | 'gardener' | 'ot';
 
+export type NdiswcStatus = 'VERIFIED' | 'PENDING' | 'NOT_SUBMITTED';
+
 export interface DSWorker {
   id: string;
   name: string;
@@ -13,6 +15,7 @@ export interface DSWorker {
   bio: string;
   hourlyRate: number;
   backgroundCheckVerified: boolean;
+  ndiswcStatus: NdiswcStatus;
   strengths: string[];
   // 7 days × 3 slots: [morning, afternoon, evening]
   availability: boolean[][];
@@ -107,7 +110,7 @@ const SEED: DataStore = {
   workers: [
     {
       id: 'w1', name: 'Maya Chen', initials: 'MC', category: 'support',
-      suburb: 'Northbridge', hourlyRate: 92, backgroundCheckVerified: true,
+      suburb: 'Northbridge', hourlyRate: 92, backgroundCheckVerified: true, ndiswcStatus: 'VERIFIED' as NdiswcStatus,
       bio: 'Support worker with a calm, dependable approach and strong experience helping participants build confidence in daily routines.',
       strengths: ['Highly Punctual', 'Calm in High-Stress Situations', 'NDIS Approved', 'Active Listener'],
       availability: weekdays.map((d) => [...d]),
@@ -115,7 +118,7 @@ const SEED: DataStore = {
     },
     {
       id: 'w2', name: 'Daniel Brooks', initials: 'DB', category: 'support',
-      suburb: 'Surry Hills', hourlyRate: 110, backgroundCheckVerified: true,
+      suburb: 'Surry Hills', hourlyRate: 110, backgroundCheckVerified: true, ndiswcStatus: 'VERIFIED' as NdiswcStatus,
       bio: 'Known for thoughtful planning and a steady presence during busy community outings and appointments.',
       strengths: ['Great with Non-Verbal Communication', 'Active Listener', 'Manual Handling Certified'],
       availability: weekdays.map((d) => [...d]),
@@ -123,7 +126,7 @@ const SEED: DataStore = {
     },
     {
       id: 'w3', name: 'Aisha Rahman', initials: 'AR', category: 'support',
-      suburb: 'Parramatta', hourlyRate: 84, backgroundCheckVerified: false,
+      suburb: 'Parramatta', hourlyRate: 84, backgroundCheckVerified: false, ndiswcStatus: 'PENDING' as NdiswcStatus,
       bio: 'Friendly and organised support worker focused on building routines that support independence and wellbeing.',
       strengths: ['Pet Friendly', 'Dual Language Speaker', 'Person-Centred Approach'],
       availability: flexDays.map((d) => [...d]),
@@ -131,7 +134,7 @@ const SEED: DataStore = {
     },
     {
       id: 'w4', name: 'Sam Okafor', initials: 'SO', category: 'cleaner',
-      suburb: 'Chatswood', hourlyRate: 65, backgroundCheckVerified: true,
+      suburb: 'Chatswood', hourlyRate: 65, backgroundCheckVerified: true, ndiswcStatus: 'VERIFIED' as NdiswcStatus,
       bio: 'Experienced domestic assistant with specialist knowledge in NDIS-funded cleaning.',
       strengths: ['Detail-Oriented', 'NDIS Familiar', 'Highly Reliable'],
       availability: weekdays.map((d) => [...d]),
@@ -139,7 +142,7 @@ const SEED: DataStore = {
     },
     {
       id: 'w5', name: 'Leo Fernandez', initials: 'LF', category: 'gardener',
-      suburb: 'Penrith', hourlyRate: 70, backgroundCheckVerified: true,
+      suburb: 'Penrith', hourlyRate: 70, backgroundCheckVerified: true, ndiswcStatus: 'VERIFIED' as NdiswcStatus,
       bio: 'Accessible garden specialist who designs and maintains safe, therapeutic outdoor spaces.',
       strengths: ['Accessible Design', 'NDIS Trained', 'First Aid Certified'],
       availability: weekdays.map((d) => [...d]),
@@ -147,7 +150,7 @@ const SEED: DataStore = {
     },
     {
       id: 'w6', name: 'Dr. Rachel Tran', initials: 'RT', category: 'ot',
-      suburb: 'North Sydney', hourlyRate: 195, backgroundCheckVerified: true,
+      suburb: 'North Sydney', hourlyRate: 195, backgroundCheckVerified: true, ndiswcStatus: 'VERIFIED' as NdiswcStatus,
       bio: 'AHPRA-registered OT with 10 years of experience in home modification assessments and assistive technology.',
       strengths: ['AHPRA Registered', 'NDIS Specialist', 'Home Modifications'],
       availability: Array.from({ length: 7 }, (_, i) => i < 5 ? [false, true, false] : [false, false, false]),

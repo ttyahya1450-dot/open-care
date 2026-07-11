@@ -15,18 +15,22 @@ const CATEGORIES: Array<{ id: ServiceCategory; icon: string; tagline: string }> 
   { id: 'Occupational Therapists', icon: '🏥', tagline: 'Functional assessments, equipment prescription & therapy' },
 ];
 
+type NdiswcStatus = 'VERIFIED' | 'PENDING' | 'NOT_SUBMITTED';
+
 interface ServiceProvider {
   id: string; category: ServiceCategory;
   name: string; bio: string; suburb: string;
   hourlyRate: number; badges: string[]; specialties: string[];
   availability: string; isVerified: boolean;
+  ndiswcStatus: NdiswcStatus;
 }
 
 // ── Seed API types & helpers ──────────────────────────────────────────────
 interface SeedWorker {
   id: string; name: string; bio: string; suburb: string;
   hourlyRate: number; category: 'support' | 'cleaner' | 'gardener' | 'ot';
-  backgroundCheckVerified: boolean; strengths: string[]; availability: boolean[][];
+  backgroundCheckVerified: boolean; ndiswcStatus: NdiswcStatus;
+  strengths: string[]; availability: boolean[][];
 }
 
 const CATEGORY_MAP: Record<SeedWorker['category'], ServiceCategory> = {
@@ -61,54 +65,54 @@ const BADGE_COLORS = [
 ];
 
 const PROVIDERS: ServiceProvider[] = [
-  { id: 'sw1', category: 'Support Workers', name: 'Maya Chen', hourlyRate: 92, suburb: 'Northbridge', isVerified: true, availability: 'Available this week',
+  { id: 'sw1', category: 'Support Workers', name: 'Maya Chen', hourlyRate: 92, suburb: 'Northbridge', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Available this week',
     bio: 'Support worker with a calm, dependable approach and strong experience helping participants build confidence in daily routines.',
     badges: ['Highly Punctual', 'Calm in High-Stress Situations', 'NDIS Approved'],
     specialties: ['Personal care', 'Meal prep', 'Community access'] },
-  { id: 'sw2', category: 'Support Workers', name: 'Daniel Brooks', hourlyRate: 110, suburb: 'Surry Hills', isVerified: true, availability: 'Next 48 hours',
+  { id: 'sw2', category: 'Support Workers', name: 'Daniel Brooks', hourlyRate: 110, suburb: 'Surry Hills', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Next 48 hours',
     bio: 'Known for thoughtful planning and a steady presence during busy community outings and appointments.',
     badges: ['Great with Non-Verbal Communication', 'Active Listener', 'Manual Handling Certified'],
     specialties: ['Behaviour support', 'Social engagement', 'Transport'] },
-  { id: 'sw3', category: 'Support Workers', name: 'Aisha Rahman', hourlyRate: 84, suburb: 'Parramatta', isVerified: false, availability: 'Open for weekend bookings',
+  { id: 'sw3', category: 'Support Workers', name: 'Aisha Rahman', hourlyRate: 84, suburb: 'Parramatta', isVerified: false, ndiswcStatus: 'PENDING', availability: 'Open for weekend bookings',
     bio: 'Friendly and organised support worker focused on building routines that support independence and wellbeing.',
     badges: ['Pet Friendly', 'Dual Language Speaker', 'Person-Centred Approach'],
     specialties: ['Domestic assistance', 'Wellbeing check-ins', 'Exercise support'] },
 
-  { id: 'cl1', category: 'Cleaners', name: 'Sam Okafor', hourlyRate: 65, suburb: 'Chatswood', isVerified: true, availability: 'Available Mon–Fri',
+  { id: 'cl1', category: 'Cleaners', name: 'Sam Okafor', hourlyRate: 65, suburb: 'Chatswood', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Available Mon–Fri',
     bio: 'Experienced domestic assistant with specialist knowledge in NDIS-funded cleaning and safe home environment setup for participants.',
     badges: ['Detail-Oriented', 'NDIS Familiar', 'Highly Reliable'],
     specialties: ['Deep cleaning', 'Laundry & ironing', 'Kitchen hygiene'] },
-  { id: 'cl2', category: 'Cleaners', name: 'Priya Nair', hourlyRate: 58, suburb: 'Blacktown', isVerified: true, availability: 'Flexible scheduling',
+  { id: 'cl2', category: 'Cleaners', name: 'Priya Nair', hourlyRate: 58, suburb: 'Blacktown', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Flexible scheduling',
     bio: 'Compassionate cleaner who understands the importance of dignity and familiarity inside a participant\'s home environment.',
     badges: ['Quiet & Respectful', 'Eco Products', 'Participant Trained'],
     specialties: ['Accessible bathroom care', 'Bedroom maintenance', 'Sanitisation'] },
-  { id: 'cl3', category: 'Cleaners', name: 'Tom Walsh', hourlyRate: 72, suburb: 'Liverpool', isVerified: false, availability: 'Weekends available',
+  { id: 'cl3', category: 'Cleaners', name: 'Tom Walsh', hourlyRate: 72, suburb: 'Liverpool', isVerified: false, ndiswcStatus: 'PENDING', availability: 'Weekends available',
     bio: 'Thorough and efficient cleaner specialising in larger homes and multi-room maintenance for NDIS households.',
     badges: ['Equipment Experienced', 'Heavy-Duty Cleaning', 'Insured'],
     specialties: ['Window cleaning', 'Carpet care', 'Hoarding recovery support'] },
 
-  { id: 'ga1', category: 'Gardeners', name: 'Leo Fernandez', hourlyRate: 70, suburb: 'Penrith', isVerified: true, availability: 'Available this week',
+  { id: 'ga1', category: 'Gardeners', name: 'Leo Fernandez', hourlyRate: 70, suburb: 'Penrith', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Available this week',
     bio: 'Accessible garden specialist who designs and maintains safe, therapeutic outdoor spaces for NDIS participants at home.',
     badges: ['Accessible Design', 'NDIS Trained', 'First Aid Certified'],
     specialties: ['Lawn mowing', 'Raised-bed gardens', 'Accessible path clearing'] },
-  { id: 'ga2', category: 'Gardeners', name: 'Nikita Green', hourlyRate: 55, suburb: 'Castle Hill', isVerified: true, availability: 'Next 48 hours',
+  { id: 'ga2', category: 'Gardeners', name: 'Nikita Green', hourlyRate: 55, suburb: 'Castle Hill', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Next 48 hours',
     bio: 'Creates calming, sensory-friendly outdoor environments for participants with complex needs — patient and knowledgeable.',
     badges: ['Sensory Garden Design', 'Calm & Patient', 'Horticulture Trained'],
     specialties: ['Weeding & pruning', 'Planting therapy', 'Seasonal maintenance'] },
-  { id: 'ga3', category: 'Gardeners', name: 'Karl Jensen', hourlyRate: 80, suburb: 'Hornsby', isVerified: false, availability: 'Open for weekends',
+  { id: 'ga3', category: 'Gardeners', name: 'Karl Jensen', hourlyRate: 80, suburb: 'Hornsby', isVerified: false, ndiswcStatus: 'PENDING', availability: 'Open for weekends',
     bio: 'Practical and reliable gardener with experience in large outdoor maintenance projects for residential NDIS clients.',
     badges: ['Heavy Equipment', 'Tree Trimming', 'Insured & Certified'],
     specialties: ['Hedge trimming', 'Tree lopping', 'Outdoor rubbish removal'] },
 
-  { id: 'ot1', category: 'Occupational Therapists', name: 'Dr. Rachel Tran', hourlyRate: 195, suburb: 'North Sydney', isVerified: true, availability: 'Bookings this month',
+  { id: 'ot1', category: 'Occupational Therapists', name: 'Dr. Rachel Tran', hourlyRate: 195, suburb: 'North Sydney', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Bookings this month',
     bio: 'AHPRA-registered OT with 10 years of experience in home modification assessments, assistive technology, and NDIS goal reporting.',
     badges: ['AHPRA Registered', 'NDIS Specialist', 'Home Modifications'],
     specialties: ['Home modification reports', 'AT prescription', 'NDIS goal planning'] },
-  { id: 'ot2', category: 'Occupational Therapists', name: 'James Obi', hourlyRate: 175, suburb: 'Macquarie Park', isVerified: true, availability: 'Next 48 hours',
+  { id: 'ot2', category: 'Occupational Therapists', name: 'James Obi', hourlyRate: 175, suburb: 'Macquarie Park', isVerified: true, ndiswcStatus: 'VERIFIED', availability: 'Next 48 hours',
     bio: 'Paediatric and adult OT specialising in sensory processing, fine motor development, and community participation planning.',
     badges: ['Paediatric Specialist', 'Sensory Processing', 'Autism Experienced'],
     specialties: ['Sensory assessments', 'Fine motor therapy', 'Community access planning'] },
-  { id: 'ot3', category: 'Occupational Therapists', name: 'Sandra Hopkirk', hourlyRate: 160, suburb: 'Bondi Junction', isVerified: false, availability: 'Weekdays available',
+  { id: 'ot3', category: 'Occupational Therapists', name: 'Sandra Hopkirk', hourlyRate: 160, suburb: 'Bondi Junction', isVerified: false, ndiswcStatus: 'PENDING', availability: 'Weekdays available',
     bio: 'Dedicated OT focusing on capacity building and functional independence for adults with physical and psychosocial disabilities.',
     badges: ['Capacity Building', 'Psychosocial Support', 'Report Writing'],
     specialties: ['Functional capacity evaluations', 'Psychosocial reports', 'NDIS plan review support'] },
@@ -138,6 +142,7 @@ export default function MarketplacePage() {
           specialties:  CATEGORY_SPECIALTIES[w.category],
           availability: availabilityLabel(w.availability),
           isVerified:   w.backgroundCheckVerified,
+          ndiswcStatus: w.ndiswcStatus,
         }));
         setProviders(mapped);
       })
@@ -147,6 +152,7 @@ export default function MarketplacePage() {
   const filtered = useMemo(() =>
     providers.filter(
       (p) =>
+        p.ndiswcStatus === 'VERIFIED' &&
         p.category   === category &&
         p.suburb.toLowerCase().includes(suburbQuery.trim().toLowerCase()) &&
         p.hourlyRate <= maxRate &&

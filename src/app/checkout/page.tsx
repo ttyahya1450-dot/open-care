@@ -20,10 +20,12 @@ export default function CheckoutPage() {
     const participantCheckoutTotal = bookingTotal * 1.05;
     const workerPayoutAmount       = bookingTotal * 0.925;
     const platformFeeAmount        = participantCheckoutTotal - workerPayoutAmount;
+    const participantSurcharge     = bookingTotal * 0.05;
+    const workerDeduction          = bookingTotal * 0.075;
     const agencyPayout             = bookingTotal * 0.6;
     const extraVsAgency            = workerPayoutAmount - agencyPayout;
     const extraPercent             = ((extraVsAgency / agencyPayout) * 100).toFixed(1);
-    return { bookingTotal, participantCheckoutTotal, workerPayoutAmount, platformFeeAmount, agencyPayout, extraVsAgency, extraPercent };
+    return { bookingTotal, participantCheckoutTotal, workerPayoutAmount, platformFeeAmount, participantSurcharge, workerDeduction, agencyPayout, extraVsAgency, extraPercent };
   }, [hours]);
 
   if (!isAllowed) return null;
@@ -130,13 +132,26 @@ export default function CheckoutPage() {
                 <span className="font-extrabold text-[18px] text-green-800 dark:text-green-400">${fees.workerPayoutAmount.toFixed(2)}</span>
               </div>
 
-              {/* Platform fee */}
-              <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 flex justify-between items-center border border-amber-200 dark:border-amber-800">
-                <div>
+              {/* Platform fee with exact split */}
+              <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-200 dark:border-amber-800">
+                <div className="flex justify-between items-center mb-2.5">
                   <div className="font-semibold text-sm text-navy dark:text-slate-200">OpenCare platform fee</div>
-                  <div className="text-xs text-amber-700 dark:text-amber-400 mt-0.5">12.5% blended take-rate total</div>
+                  <span className="font-extrabold text-[18px] text-amber-800 dark:text-amber-400">${fees.platformFeeAmount.toFixed(2)}</span>
                 </div>
-                <span className="font-extrabold text-[18px] text-amber-800 dark:text-amber-400">${fees.platformFeeAmount.toFixed(2)}</span>
+                <div className="grid gap-1.5 border-t border-amber-200 dark:border-amber-800/60 pt-2.5">
+                  <div className="flex justify-between text-xs text-amber-700 dark:text-amber-400">
+                    <span>Participant side (+5% on base)</span>
+                    <span className="font-semibold">+${fees.participantSurcharge.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-amber-700 dark:text-amber-400">
+                    <span>Worker side (−7.5% of base)</span>
+                    <span className="font-semibold">−${fees.workerDeduction.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-[11px] text-amber-600 dark:text-amber-500 font-bold uppercase tracking-wide pt-0.5 border-t border-amber-200/60 dark:border-amber-800/40 mt-0.5">
+                    <span>Total blended take-rate</span>
+                    <span>12.5%</span>
+                  </div>
+                </div>
               </div>
             </div>
 
